@@ -1,13 +1,29 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import List from '../components/comment/list'
-import { data } from '../helpers/data'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import useSWR from "swr";
+import CommentList from "../components/comment/list";
+import styles from "../styles/Home.module.css";
+import { Comment } from "../types/comment";
+import * as Styles from "./index.styles";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (response.status !== 200) {
+    throw new Error(data.message);
+  }
+
+  return data;
+};
 
 const Home: NextPage = () => {
-  const t = data.getInitialValue();
-  console.log('t', t)
+  const { data, error } = useSWR("/api/comments", fetcher);
+
+  if (error) return <div>Failed to load</div>;
+  if (!data) return <div>Loading...</div>;
+
+  const comments = data.comments as Comment[];
 
   return (
     <div className={styles.container}>
@@ -17,16 +33,23 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <List />
-      </main>
+      <Styles.Main>
+        <CommentList comments={comments} />
+      </Styles.Main>
 
       <footer className={styles.attribution}>
-        Challenge by <a href="https://www.frontendmentor.io?ref=challenge" rel="noreferrer" target="_blank">Frontend Mentor</a>.
-        Coded by <a href="#">Jomar H. Cui</a>.
+        Challenge by{" "}
+        <a
+          href="https://www.frontendmentor.io?ref=challenge"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Frontend Mentor
+        </a>
+        . Coded by <a href="#">Jomar H. Cui</a>.
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
