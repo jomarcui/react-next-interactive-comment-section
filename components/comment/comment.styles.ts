@@ -2,8 +2,20 @@ import styled, { css } from "styled-components";
 
 //#region Mixins
 
+const Colors = {
+  MODERATE_BLUE: "hsl(238, 40%, 52%)",
+  SOFT_RED: "hsl(358, 79%, 66%)",
+  LIGHT_GRAYISH_BLUE: "hsl(239, 57%, 85%)",
+  PALE_RED: "hsl(357, 100%, 86%)",
+  DARK_BLUE: "hsl(212, 24%, 26%)",
+  GRAYISH_BLUE: "hsl(211, 10%, 45%)",
+  LIGHT_GRAY: "hsl(223, 19%, 93%)",
+  VERY_LIGHT_GRAY: "hsl(228, 33%, 97%)",
+  WHITE: "hsl(0, 0%, 100%)",
+};
+
 const commentContainer = css`
-  background-color: hsl(0, 0%, 100%);
+  background-color: ${Colors.WHITE};
   border-radius: 0.5rem;
   display: flex;
   margin-bottom: 1rem;
@@ -11,6 +23,7 @@ const commentContainer = css`
 `;
 
 const flexBox = css`
+  align-items: center;
   display: flex;
 `;
 
@@ -32,11 +45,14 @@ const marginY = css`
 
 export const Comment = styled.div`
   ${commentContainer}
+  font: 500 1rem "Rubik";
 `;
 
 export const Content = styled.div`
   ${marginY}
-  font-size: 1em;
+  color: ${Colors.GRAYISH_BLUE};
+  font: 400 1rem "Rubik";
+  margin: 1rem;
 `;
 
 export const FlexBoxCol = styled.div`
@@ -51,10 +67,9 @@ export const FlexBoxRow = styled.div`
 
 export const Li = styled.li`
   ${flexBoxCol}
-  /* margin: 0.5rem; */
 
   .score {
-    background-color: hsl(223, 19%, 93%);
+    background-color: ${Colors.LIGHT_GRAY};
     border-radius: 0.25rem;
     display: flex;
     flex-direction: column;
@@ -62,7 +77,6 @@ export const Li = styled.li`
     > div {
       align-items: center;
       display: flex;
-      font-weight: 700;
       justify-content: center;
       padding: 0.75rem;
     }
@@ -70,62 +84,86 @@ export const Li = styled.li`
     .button {
       color: hsl(239, 57%, 85%);
       cursor: pointer;
+      font: 500 1rem "Rubik";
       transition: color 0.15s, font-size 0.15s;
 
       &:hover {
         color: hsl(238, 40%, 52%);
-        font-size: 1.25em;
+        font: 500 1.25rem "Rubik";
       }
     }
 
     .value {
       color: hsl(238, 40%, 52%);
+      font: 500 1rem "Rubik";
     }
   }
 
   .details {
     flex-grow: 1;
-    padding: 0 1rem;
 
     .comment-header {
-      align-items: center;
-      display: flex;
+      ${flexBox}
+      margin: 1rem;
 
       .user-info {
-        align-items: center;
-        display: flex;
+        ${flexBox}
 
         .avatar {
-          align-items: center;
-          display: flex;
-          margin-right: 1rem;
+          ${flexBox}
+          margin-right: 0.5rem;
         }
 
         .username {
-          margin-right: 1rem;
+          color: black;
+          font: 500 1rem "Rubik";
+          margin: 0 0.5rem;
+
+          .you {
+            background-color: ${Colors.MODERATE_BLUE};
+            border-radius: 0.25rem;
+            color: ${Colors.WHITE};
+            font: 400 0.875rem "Rubik";
+            margin: 0 1rem;
+            padding: 0.25rem 0.5rem;
+          }
+        }
+
+        .created-at {
+          color: ${Colors.GRAYISH_BLUE};
+          font: 400 1rem "Rubik";
+          margin-left: 0.5rem;
         }
       }
 
       .controls {
+        ${flexBoxRow}
+        align-items: center;
         margin-left: auto;
 
         button {
-          align-items: center;
+          ${flexBox}
           background: none;
           border: none;
           cursor: pointer;
-          display: flex;
+          padding: 0;
           transition: opacity 0.15s;
 
           .text {
             color: #5457b6;
-            font-size: 1rem;
-            font-weight: 700;
+            font: 500 1rem "Rubik";
             margin-left: 0.5rem;
           }
 
           &:hover {
             opacity: 0.5;
+          }
+
+          &.delete {
+            margin-right: 1rem;
+            .text {
+              color: ${Colors.SOFT_RED};
+            }
           }
         }
       }
@@ -147,7 +185,7 @@ export const Reply = styled.form`
       background-color: #5457b6;
       border: none;
       border-radius: 0.5rem;
-      color: hsl(0, 0%, 100%);
+      color: ${Colors.WHITE};
       cursor: pointer;
       font-size: 1rem;
       font-weight: 700;
@@ -170,7 +208,7 @@ export const Reply = styled.form`
 `;
 
 export const ReplyUlContainer = styled.ul`
-  border-left: 0.1875rem solid hsl(223, 19%, 93%);
+  border-left: 0.1875rem solid ${Colors.LIGHT_GRAY};
   margin-left: 2rem;
   padding-left: 2rem;
 `;

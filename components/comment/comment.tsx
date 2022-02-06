@@ -10,7 +10,6 @@ type CommentProps = {
   comment: Types.Comment;
   currentUser: Types.User;
   handleReplyClick: any;
-  isMyComment: boolean;
 };
 
 const Comment = ({
@@ -26,7 +25,6 @@ const Comment = ({
   },
   currentUser,
   handleReplyClick,
-  isMyComment,
 }: CommentProps) => {
   const [showReply, setShowReply] = useState(false);
 

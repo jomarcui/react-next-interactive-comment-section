@@ -2,6 +2,7 @@ import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
 import Comment from "./comment";
+import MyComment from "./mycomment";
 
 type CommentListProps = {
   comments: Types.Comment[];
@@ -14,25 +15,30 @@ const CommentList = ({ comments, currentUser }: CommentListProps) => {
     alert(e.currentTarget.dataset.commentId);
   };
 
+  const renderComment = (comment: Types.Comment) => {
+    const isMyComment = comment.user.username === currentUser.username;
+
+    const props = {
+      currentUser,
+      handleReplyClick,
+    };
+
+    if (isMyComment) {
+      return <MyComment comment={comment} {...props} />;
+    }
+
+    return <Comment comment={comment} {...props} />;
+  };
+
   return (
     <Styles.Ul>
       {comments.map((comment) => {
-        const isMyComment = comment.user.username === currentUser.username;
-
-        const props = {
-          currentUser,
-          isMyComment,
-          handleReplyClick,
-        };
-
         return (
           <Styles.Li key={comment.id}>
-            <Comment comment={comment} {...props} />
+            {renderComment(comment)}
             <Styles.ReplyUlContainer>
               {comment.replies.map((reply) => (
-                <Styles.Li key={reply.id}>
-                  <Comment comment={reply} {...props} />
-                </Styles.Li>
+                <Styles.Li key={reply.id}>{renderComment(reply)}</Styles.Li>
               ))}
             </Styles.ReplyUlContainer>
           </Styles.Li>
