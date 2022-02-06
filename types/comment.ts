@@ -3,12 +3,14 @@ export type Comment = {
   content: string;
   createdAt: string;
   score: number;
-  user: {
-    image: {
-      png: string;
-      webp: string;
-    };
-    username: string;
+  user: User;
+  replies: Comment[];
+};
+
+export type User = {
+  image: {
+    png: string;
+    webp: string;
   };
-  replies?: Comment[];
+  username: string;
 };

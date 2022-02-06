@@ -3,7 +3,7 @@ import Head from "next/head";
 import useSWR from "swr";
 import CommentList from "../components/comment/list";
 import styles from "../styles/Home.module.css";
-import { Comment } from "../types/comment";
+import * as Types from "../types/comment";
 import * as Styles from "./index.styles";
 
 const fetcher = async (url: string) => {
@@ -23,7 +23,8 @@ const Home: NextPage = () => {
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
 
-  const comments = data.comments as Comment[];
+  const currentUser = data.currentUser as Types.User;
+  const comments = data.comments as Types.Comment[];
 
   return (
     <div className={styles.container}>
@@ -34,7 +35,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Styles.Main>
-        <CommentList comments={comments} />
+        <CommentList comments={comments} currentUser={currentUser} />
       </Styles.Main>
 
       <footer className={styles.attribution}>
