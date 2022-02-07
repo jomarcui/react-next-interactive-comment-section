@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
+import { useState } from "react";
 
 type CommentProps = {
   comment: Types.Comment;
@@ -19,7 +20,17 @@ const MyComment = ({
     },
   },
 }: CommentProps) => {
-  const showEditHandleClick = () => {};
+  const [isEditing, setIsEditing] = useState(false);
+  const [myComment, setMyComment] = useState(content);
+
+  const commentHandleChange = (e: any) => {
+    setMyComment(e.currentTarget.val);
+  };
+
+  const showEditHandleClick = () => {
+    setIsEditing(true);
+  };
+
   return (
     <Styles.Comment>
       <div>
@@ -74,7 +85,18 @@ const MyComment = ({
             </button>
           </div>
         </div>
-        <Styles.Content>{content}</Styles.Content>
+        {isEditing && (
+          <Styles.Content>
+            <textarea
+              onChange={commentHandleChange}
+              title="Your comment"
+              value={myComment}
+            />
+            <Styles.Button align="end">UPDATE</Styles.Button>
+          </Styles.Content>
+        )}
+
+        {!isEditing && <Styles.Content>{content}</Styles.Content>}
       </div>
     </Styles.Comment>
   );

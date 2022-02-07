@@ -20,6 +20,7 @@ const commentContainer = css`
   display: flex;
   margin-bottom: 1rem;
   padding: 1rem;
+  width: 100%;
 `;
 
 const flexBox = css`
@@ -41,7 +42,31 @@ const marginY = css`
   margin: 1em 0;
 `;
 
-//#endregion Mixins
+//#endregion
+
+//#region Types
+
+interface IButton {
+  align: string;
+}
+
+//#endregion
+
+export const Button = styled.button<IButton>`
+  background-color: ${Colors.MODERATE_BLUE};
+  border: none;
+  border-radius: 0.5rem;
+  color: ${Colors.WHITE};
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
 
 export const Comment = styled.div`
   ${commentContainer}
@@ -53,6 +78,19 @@ export const Content = styled.div`
   color: ${Colors.GRAYISH_BLUE};
   font: 400 1rem "Rubik";
   margin: 1rem;
+
+  textarea {
+    border: 0.125rem solid ${Colors.MODERATE_BLUE};
+    border-radius: 1rem;
+    display: block;
+    color: ${Colors.DARK_BLUE};
+    font: 400 1rem "Rubik";
+    line-height: 1.5rem;
+    height: 9rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    width: 100%;
+  }
 `;
 
 export const FlexBoxCol = styled.div`
