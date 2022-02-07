@@ -5,11 +5,12 @@ import Comment from "./comment";
 import MyComment from "./mycomment";
 
 type CommentListProps = {
-  comments: Types.Comment[];
-  currentUser: Types.User;
+  comments: Types.Comment[],
+  currentUser: Types.User,
+  setShow: any,
 };
 
-const CommentList = ({ comments, currentUser }: CommentListProps) => {
+const CommentList = ({ comments, currentUser, setShow }: CommentListProps) => {
   const handleReplyClick = (e: any) => {
     e.preventDefault();
     alert(e.currentTarget.dataset.commentId);
@@ -21,6 +22,7 @@ const CommentList = ({ comments, currentUser }: CommentListProps) => {
     const props = {
       currentUser,
       handleReplyClick,
+      setShow,
     };
 
     if (isMyComment) {

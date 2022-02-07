@@ -5,7 +5,8 @@ import * as Types from "../../types/comment";
 import { useState } from "react";
 
 type CommentProps = {
-  comment: Types.Comment;
+  comment: Types.Comment,
+  setShow: any,
 };
 
 const MyComment = ({
@@ -19,6 +20,7 @@ const MyComment = ({
       username,
     },
   },
+  setShow
 }: CommentProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [myComment, setMyComment] = useState(content);
@@ -26,6 +28,10 @@ const MyComment = ({
   const commentHandleChange = (e: any) => {
     setMyComment(e.currentTarget.val);
   };
+
+  const deleteHandleClick = () => {
+    setShow(true);
+  }
 
   const showEditHandleClick = () => {
     setIsEditing(true);
@@ -63,7 +69,7 @@ const MyComment = ({
               <span
                 className="text"
                 data-comment-id={id}
-                onClick={showEditHandleClick}
+                onClick={deleteHandleClick}
               >
                 Delete
               </span>

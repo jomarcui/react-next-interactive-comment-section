@@ -1,7 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import useSWR from "swr";
 import CommentList from "../components/comment/list";
+import Modal from "../components/ui/modal";
+import { Colors } from "../enums/colors";
 import styles from "../styles/Home.module.css";
 import * as Types from "../types/comment";
 import * as Styles from "./index.styles";
@@ -20,6 +23,8 @@ const fetcher = async (url: string) => {
 const Home: NextPage = () => {
   const { data, error } = useSWR("/api/comments", fetcher);
 
+  const [show, setShow] = useState(false);
+
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
 
@@ -35,7 +40,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Styles.Main>
-        <CommentList comments={comments} currentUser={currentUser} />
+        <CommentList comments={comments} currentUser={currentUser} setShow={setShow} />
       </Styles.Main>
 
       <footer className={styles.attribution}>
@@ -49,6 +54,13 @@ const Home: NextPage = () => {
         </a>
         . Coded by <a href="#">Jomar H. Cui</a>.
       </footer>
+
+      <Modal show={show}>
+        <p>Delete comment</p>
+        <p>Are you sure you want to delete this comment? This will remove the comment and can&lsquo;t be undone.</p>
+        <Styles.Button backgroundColor={Colors.GRAYISH_BLUE}>NO, CANCEL</Styles.Button>
+        <Styles.Button backgroundColor={Colors.SOFT_RED}>YES, DELETE</Styles.Button>
+      </Modal>
     </div>
   );
 };
