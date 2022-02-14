@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import useSWR from "swr";
-import CommentList from "../components/comment/list";
+import Comments from "../components/comment/list";
 import Modal from "../components/ui/modal";
 import { Colors } from "../enums/colors";
 import styles from "../styles/Home.module.css";
@@ -23,13 +23,38 @@ const fetcher = async (url: string) => {
 const Home: NextPage = () => {
   const { data, error } = useSWR("/api/comments", fetcher);
 
+  const [commentIdToDelete, setCommentIdToDelete] = useState(0);
   const [show, setShow] = useState(false);
+
+  const deleteComment = (id: number) => {
+    alert(`${id} is deleted!`);
+  };
+
+  //#region Event handlers
+
+  const handleClickCancelDelete = () => {
+    setCommentIdToDelete(0);
+    setShow(false);
+  };
+
+  const handleClickConfirmDelete = () => {
+    deleteComment(commentIdToDelete);
+    setShow(false);
+  };
+
+  //#endregion
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
 
-  const currentUser = data.currentUser as Types.User;
-  const comments = data.comments as Types.Comment[];
+  const { comments, currentUser } = data;
+
+  const propsComments = {
+    setCommentIdToDelete,
+    setShow,
+    comments: comments as Types.Comment[],
+    currentUser: currentUser as Types.User,
+  };
 
   return (
     <div className={styles.container}>
@@ -40,7 +65,26 @@ const Home: NextPage = () => {
       </Head>
 
       <Styles.Main>
-        <CommentList comments={comments} currentUser={currentUser} setShow={setShow} />
+        <Comments props={propsComments} />
+        <Modal show={show}>
+          <p>Delete comment</p>
+          <p>
+            Are you sure you want to delete this comment? This will remove the
+            comment and can&lsquo;t be undone.
+          </p>
+          <Styles.Button
+            backgroundColor={Colors.GRAYISH_BLUE}
+            onClick={handleClickCancelDelete}
+          >
+            NO, CANCEL
+          </Styles.Button>
+          <Styles.Button
+            backgroundColor={Colors.SOFT_RED}
+            onClick={handleClickConfirmDelete}
+          >
+            YES, DELETE
+          </Styles.Button>
+        </Modal>
       </Styles.Main>
 
       <footer className={styles.attribution}>
@@ -54,13 +98,6 @@ const Home: NextPage = () => {
         </a>
         . Coded by <a href="#">Jomar H. Cui</a>.
       </footer>
-
-      <Modal show={show}>
-        <p>Delete comment</p>
-        <p>Are you sure you want to delete this comment? This will remove the comment and can&lsquo;t be undone.</p>
-        <Styles.Button backgroundColor={Colors.GRAYISH_BLUE}>NO, CANCEL</Styles.Button>
-        <Styles.Button backgroundColor={Colors.SOFT_RED}>YES, DELETE</Styles.Button>
-      </Modal>
     </div>
   );
 };

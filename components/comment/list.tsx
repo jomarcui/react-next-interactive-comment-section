@@ -1,17 +1,24 @@
+import { Dispatch, SetStateAction } from "react";
+
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
 import Comment from "./comment";
 import MyComment from "./mycomment";
 
-type CommentListProps = {
-  comments: Types.Comment[],
-  currentUser: Types.User,
-  setShow: any,
+type CommentsProps = {
+  props: {
+    comments: Types.Comment[];
+    currentUser: Types.User;
+    setCommentIdToDelete: Dispatch<SetStateAction<number>>;
+    setShow: Dispatch<SetStateAction<boolean>>;
+  };
 };
 
-const CommentList = ({ comments, currentUser, setShow }: CommentListProps) => {
-  const handleReplyClick = (e: any) => {
+const Comments = ({
+  props: { comments, currentUser, setCommentIdToDelete, setShow },
+}: CommentsProps) => {
+  const handleClickReply = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     alert(e.currentTarget.dataset.commentId);
   };
@@ -19,35 +26,28 @@ const CommentList = ({ comments, currentUser, setShow }: CommentListProps) => {
   const renderComment = (comment: Types.Comment) => {
     const isMyComment = comment.user.username === currentUser.username;
 
-    const props = {
-      currentUser,
-      handleReplyClick,
-      setShow,
-    };
-
     if (isMyComment) {
-      return <MyComment comment={comment} {...props} />;
+      return <MyComment comment={comment} setCommentIdToDelete={setCommentIdToDelete} setShow={setShow} />;
     }
 
-    return <Comment comment={comment} {...props} />;
+    return <Comment comment={comment} currentUser={currentUser} handleClickReply={handleClickReply} />;
   };
 
   return (
     <Styles.Ul>
-      {comments.map((comment) => {
-        return (
-          <Styles.Li key={comment.id}>
-            {renderComment(comment)}
-            <Styles.ReplyUlContainer>
-              {comment.replies.map((reply) => (
-                <Styles.Li key={reply.id}>{renderComment(reply)}</Styles.Li>
-              ))}
-            </Styles.ReplyUlContainer>
-          </Styles.Li>
-        );
-      })}
+      {comments.map((comment) => (
+        <Styles.Li key={comment.id}>
+          {renderComment(comment)}
+
+          <Styles.ReplyUlContainer>
+            {comment.replies.map((reply) => (
+              <Styles.Li key={reply.id}>{renderComment(reply)}</Styles.Li>
+            ))}
+          </Styles.ReplyUlContainer>
+        </Styles.Li>
+      ))}
     </Styles.Ul>
   );
 };
 
-export default CommentList;
+export default Comments;

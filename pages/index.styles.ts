@@ -13,7 +13,7 @@ interface IButton {
 export const Button = styled.button<IButton>`
   background-color: ${({backgroundColor}) => backgroundColor};
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   color: ${Colors.WHITE};
   cursor: pointer;
   font: 500 1rem "Rubik";

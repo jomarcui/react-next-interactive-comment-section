@@ -9,7 +9,7 @@ import Reply from "./reply";
 type CommentProps = {
   comment: Types.Comment;
   currentUser: Types.User;
-  handleReplyClick: any;
+  handleClickReply: any;
 };
 
 const Comment = ({
@@ -24,7 +24,7 @@ const Comment = ({
     },
   },
   currentUser,
-  handleReplyClick,
+  handleClickReply,
 }: CommentProps) => {
   const [showReply, setShowReply] = useState(false);
 
@@ -77,7 +77,7 @@ const Comment = ({
         <Reply
           commentId={id}
           currentUser={currentUser}
-          handleReplyClick={handleReplyClick}
+          handleReplyClick={handleClickReply}
         />
       )}
     </>

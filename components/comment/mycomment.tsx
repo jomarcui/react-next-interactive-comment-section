@@ -2,11 +2,12 @@ import Image from "next/image";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 type CommentProps = {
   comment: Types.Comment,
-  setShow: any,
+  setCommentIdToDelete: Dispatch<SetStateAction<number>>,
+  setShow: Dispatch<SetStateAction<boolean>>,
 };
 
 const MyComment = ({
@@ -20,20 +21,22 @@ const MyComment = ({
       username,
     },
   },
+  setCommentIdToDelete,
   setShow
 }: CommentProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [myComment, setMyComment] = useState(content);
 
-  const commentHandleChange = (e: any) => {
+  const handleChangeComment = (e: any) => {
     setMyComment(e.currentTarget.val);
   };
 
-  const deleteHandleClick = () => {
+  const handleClickDelete = () => {
+    setCommentIdToDelete(id);
     setShow(true);
   }
 
-  const showEditHandleClick = () => {
+  const handleClickShowEdit = () => {
     setIsEditing(true);
   };
 
@@ -69,7 +72,7 @@ const MyComment = ({
               <span
                 className="text"
                 data-comment-id={id}
-                onClick={deleteHandleClick}
+                onClick={handleClickDelete}
               >
                 Delete
               </span>
@@ -84,7 +87,7 @@ const MyComment = ({
               <span
                 className="text"
                 data-comment-id={id}
-                onClick={showEditHandleClick}
+                onClick={handleClickShowEdit}
               >
                 Edit
               </span>
@@ -94,7 +97,7 @@ const MyComment = ({
         {isEditing && (
           <Styles.Content>
             <textarea
-              onChange={commentHandleChange}
+              onChange={handleChangeComment}
               title="Your comment"
               value={myComment}
             />
