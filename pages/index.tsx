@@ -1,13 +1,17 @@
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
-import useSWR from "swr";
-import Comments from "../components/comment/list";
-import Modal from "../components/ui/modal";
-import { Colors } from "../enums/colors";
+
 import styles from "../styles/Home.module.css";
+
 import * as Types from "../types/comment";
 import * as Styles from "./index.styles";
+
+import data from "../data/data.json";
+
+import Comments from "../components/comment/list";
+
+const LOCAL_STORAGE_KEY = "comments";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -20,41 +24,43 @@ const fetcher = async (url: string) => {
   return data;
 };
 
+const getLocalStorageData = (localStorageKey: string) => {
+  const storedData = localStorage.getItem(localStorageKey);
+
+  if (storedData) {
+    return JSON.parse(storedData);
+  }
+
+  localStorage.setItem(localStorageKey, JSON.stringify(data));
+
+  return data;
+};
+
 const Home: NextPage = () => {
-  const { data, error } = useSWR("/api/comments", fetcher);
+  const [comments, setComments] = useState<Types.Comment[]>([]);
+  const [currentUser, setCurrentUser] = useState<Types.User>({
+    image: {
+      png: "/./images/avatars/image-juliusomo.png",
+      webp: "/./images/avatars/image-juliusomo.webp",
+    },
+    username: "juliusomo",
+  });
+  const [loading, setLoading] = useState(true);
 
-  const [commentIdToDelete, setCommentIdToDelete] = useState(0);
-  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setLoading(true);
 
-  const deleteComment = (id: number) => {
-    alert(`${id} is deleted!`);
-  };
+    const data = getLocalStorageData(LOCAL_STORAGE_KEY);
 
-  //#region Event handlers
+    setComments(data.comments as Types.Comment[]);
+    setCurrentUser(data.currentUser as Types.User);
 
-  const handleClickCancelDelete = () => {
-    setCommentIdToDelete(0);
-    setShow(false);
-  };
+    setLoading(false);
+  }, []);
 
-  const handleClickConfirmDelete = () => {
-    deleteComment(commentIdToDelete);
-    setShow(false);
-  };
-
-  //#endregion
-
-  if (error) return <div>Failed to load</div>;
-  if (!data) return <div>Loading...</div>;
-
-  const { comments, currentUser } = data;
-
-  const propsComments = {
-    setCommentIdToDelete,
-    setShow,
-    comments: comments as Types.Comment[],
-    currentUser: currentUser as Types.User,
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -65,26 +71,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Styles.Main>
-        <Comments props={propsComments} />
-        <Modal show={show}>
-          <p>Delete comment</p>
-          <p>
-            Are you sure you want to delete this comment? This will remove the
-            comment and can&lsquo;t be undone.
-          </p>
-          <Styles.Button
-            backgroundColor={Colors.GRAYISH_BLUE}
-            onClick={handleClickCancelDelete}
-          >
-            NO, CANCEL
-          </Styles.Button>
-          <Styles.Button
-            backgroundColor={Colors.SOFT_RED}
-            onClick={handleClickConfirmDelete}
-          >
-            YES, DELETE
-          </Styles.Button>
-        </Modal>
+        <Comments comments={comments} currentUser={currentUser} setComments={setComments} />
       </Styles.Main>
 
       <footer className={styles.attribution}>

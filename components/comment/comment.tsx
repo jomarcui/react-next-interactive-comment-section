@@ -1,15 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
-import Reply from "./reply";
-
 type CommentProps = {
   comment: Types.Comment;
   currentUser: Types.User;
-  handleClickReply: any;
+  submitReply: (replyData: Types.Comment) => void;
 };
 
 const Comment = ({
@@ -24,13 +22,36 @@ const Comment = ({
     },
   },
   currentUser,
-  handleClickReply,
+  submitReply,
 }: CommentProps) => {
-  const [showReply, setShowReply] = useState(false);
+  const [replyText, setReplyText] = useState<string>("");
+  const [replying, setReplying] = useState(false);
 
-  const showReplyHandleClick = () => {
-    setShowReply(true);
+  const handleChangeReplyText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setReplyText(e.target.value);
   };
+
+  const handleClickReply = () => {
+    setReplyText(`@${username}`);
+    setReplying(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const replyData: Types.Comment = {
+      id,
+      content: replyText,
+      createdAt: "now",
+      replyingTo: username,
+      score: 0,
+      user: currentUser,
+    }
+
+    submitReply(replyData);
+
+    setReplying(false);
+  }
 
   return (
     <>
@@ -62,7 +83,7 @@ const Comment = ({
                 <span
                   className="text"
                   data-comment-id={id}
-                  onClick={showReplyHandleClick}
+                  onClick={handleClickReply}
                 >
                   Reply
                 </span>
@@ -73,12 +94,20 @@ const Comment = ({
         </div>
       </Styles.Comment>
 
-      {showReply && (
-        <Reply
-          commentId={id}
-          currentUser={currentUser}
-          handleReplyClick={handleClickReply}
-        />
+      {replying && (
+        <Styles.ReplyForm onSubmit={handleSubmit}>
+          <Styles.FlexBoxRow>
+            <div className="avatar-container">
+              <Image alt="" height="32" src={webp} width="32" />
+            </div>
+            <div className="text-area-container">
+              <textarea name="reply" onChange={handleChangeReplyText} value={replyText} />
+            </div>
+            <div className="button-container">
+              <button>REPLY</button>
+            </div>
+          </Styles.FlexBoxRow>
+        </Styles.ReplyForm>
       )}
     </>
   );

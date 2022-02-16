@@ -35,13 +35,17 @@ const marginY = css`
 
 //#region Types
 
-interface IButton {
+interface IFormButton {
   align: string;
+}
+
+interface IModalButton {
+  backgroundColor: string
 }
 
 //#endregion
 
-export const Button = styled.button<IButton>`
+export const FormButton = styled.button<IFormButton>`
   background-color: ${Colors.MODERATE_BLUE};
   border: none;
   border-radius: 0.5rem;
@@ -55,6 +59,16 @@ export const Button = styled.button<IButton>`
   &:hover {
     opacity: 0.5;
   }
+`;
+
+export const ModalButton = styled.button<IModalButton>`
+  background-color: ${({backgroundColor}) => backgroundColor};
+  border: none;
+  border-radius: 0.5rem;
+  color: ${Colors.WHITE};
+  cursor: pointer;
+  font: 500 1rem "Rubik";
+  padding: 1rem;
 `;
 
 export const Comment = styled.div`
@@ -199,7 +213,7 @@ export const Li = styled.li`
   }
 `;
 
-export const Reply = styled.form`
+export const ReplyForm = styled.form`
   ${commentContainer}
 
   .avatar-container,
@@ -239,6 +253,7 @@ export const ReplyUlContainer = styled.ul`
   border-left: 0.1875rem solid ${Colors.LIGHT_GRAY};
   margin-left: 2rem;
   padding-left: 2rem;
+  width: 100%;
 `;
 
 export const Ul = styled.ul`

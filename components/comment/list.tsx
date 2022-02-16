@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
@@ -7,45 +7,59 @@ import Comment from "./comment";
 import MyComment from "./mycomment";
 
 type CommentsProps = {
-  props: {
-    comments: Types.Comment[];
-    currentUser: Types.User;
-    setCommentIdToDelete: Dispatch<SetStateAction<number>>;
-    setShow: Dispatch<SetStateAction<boolean>>;
-  };
+  comments: Types.Comment[];
+  currentUser: Types.User;
+  setComments: Dispatch<SetStateAction<Types.Comment[]>>
 };
 
-const Comments = ({
-  props: { comments, currentUser, setCommentIdToDelete, setShow },
-}: CommentsProps) => {
-  const handleClickReply = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    alert(e.currentTarget.dataset.commentId);
+const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
+  const submitReply = (replyData: Types.Comment) => {
+    const updatedComments = comments.map((comment) => {
+      if (comment.id === replyData.id) {
+        comment.replies = [...comment.replies, replyData];
+      }
+
+      return comment;
+    });
+
+    console.log("updatedComments", updatedComments);
+
+    setComments(updatedComments);
   };
 
   const renderComment = (comment: Types.Comment) => {
-    const isMyComment = comment.user.username === currentUser.username;
+    const isMyComment = comment.user.username === currentUser?.username;
 
     if (isMyComment) {
-      return <MyComment comment={comment} setCommentIdToDelete={setCommentIdToDelete} setShow={setShow} />;
+      return <MyComment comment={comment} />;
     }
 
-    return <Comment comment={comment} currentUser={currentUser} handleClickReply={handleClickReply} />;
+    return (
+      <Comment
+        comment={comment}
+        currentUser={currentUser}
+        submitReply={submitReply}
+      />
+    );
   };
 
   return (
     <Styles.Ul>
-      {comments.map((comment) => (
-        <Styles.Li key={comment.id}>
-          {renderComment(comment)}
+      {comments.map((comment) => {
+        const { id, replies } = comment;
 
-          <Styles.ReplyUlContainer>
-            {comment.replies.map((reply) => (
-              <Styles.Li key={reply.id}>{renderComment(reply)}</Styles.Li>
-            ))}
-          </Styles.ReplyUlContainer>
-        </Styles.Li>
-      ))}
+        return (
+          <Styles.Li key={id}>
+            {renderComment(comment)}
+
+            <Styles.ReplyUlContainer>
+              {replies?.map((reply) => (
+                <Styles.Li key={reply.id}>{renderComment(reply)}</Styles.Li>
+              ))}
+            </Styles.ReplyUlContainer>
+          </Styles.Li>
+        );
+      })}
     </Styles.Ul>
   );
 };

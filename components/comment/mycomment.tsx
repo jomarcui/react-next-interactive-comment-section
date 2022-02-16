@@ -1,13 +1,15 @@
+import { useState } from "react";
 import Image from "next/image";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
-import { Dispatch, SetStateAction, useState } from "react";
+
+import { Colors } from "../../enums/colors";
+
+import Modal from "../ui/modal";
 
 type CommentProps = {
-  comment: Types.Comment,
-  setCommentIdToDelete: Dispatch<SetStateAction<number>>,
-  setShow: Dispatch<SetStateAction<boolean>>,
+  comment: Types.Comment;
 };
 
 const MyComment = ({
@@ -21,23 +23,32 @@ const MyComment = ({
       username,
     },
   },
-  setCommentIdToDelete,
-  setShow
 }: CommentProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [commentIdToDelete, setCommentIdToDelete] = useState<string>();
+  const [deleting, setDeleting] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [myComment, setMyComment] = useState(content);
 
   const handleChangeComment = (e: any) => {
     setMyComment(e.currentTarget.val);
   };
 
+  const handleClickCancelDelete = () => {
+    setDeleting(false);
+  };
+
+  const handleClickConfirmDelete = () => {
+    setDeleting(false);
+    alert(`${commentIdToDelete} is deleted!`);
+  };
+
   const handleClickDelete = () => {
     setCommentIdToDelete(id);
-    setShow(true);
-  }
+    setDeleting(true);
+  };
 
-  const handleClickShowEdit = () => {
-    setIsEditing(true);
+  const handleClickEdit = () => {
+    setEditing(true);
   };
 
   return (
@@ -87,26 +98,49 @@ const MyComment = ({
               <span
                 className="text"
                 data-comment-id={id}
-                onClick={handleClickShowEdit}
+                onClick={handleClickEdit}
               >
                 Edit
               </span>
             </button>
           </div>
         </div>
-        {isEditing && (
+
+        {editing && (
           <Styles.Content>
             <textarea
               onChange={handleChangeComment}
               title="Your comment"
               value={myComment}
             />
-            <Styles.Button align="end">UPDATE</Styles.Button>
+            <Styles.FormButton align="end">UPDATE</Styles.FormButton>
           </Styles.Content>
         )}
 
-        {!isEditing && <Styles.Content>{content}</Styles.Content>}
+        {!editing && <Styles.Content>{content}</Styles.Content>}
       </div>
+
+      {deleting && (
+        <Modal show>
+          <p>Delete comment</p>
+          <p>
+            Are you sure you want to delete this comment? This will remove the
+            comment and can&lsquo;t be undone.
+          </p>
+          <Styles.ModalButton
+            backgroundColor={Colors.GRAYISH_BLUE}
+            onClick={handleClickCancelDelete}
+          >
+            NO, CANCEL
+          </Styles.ModalButton>
+          <Styles.ModalButton
+            backgroundColor={Colors.SOFT_RED}
+            onClick={handleClickConfirmDelete}
+          >
+            YES, DELETE
+          </Styles.ModalButton>
+        </Modal>
+      )}
     </Styles.Comment>
   );
 };

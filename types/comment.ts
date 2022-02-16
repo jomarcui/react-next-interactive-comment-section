@@ -1,10 +1,11 @@
 export type Comment = {
-  id: number;
   content: string;
   createdAt: string;
+  id: string;
+  replies?: Comment[];
+  replyingTo?: string,
   score: number;
   user: User;
-  replies: Comment[];
 };
 
 export type User = {
