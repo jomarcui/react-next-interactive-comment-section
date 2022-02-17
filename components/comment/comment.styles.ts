@@ -197,7 +197,11 @@ export const Li = styled.li`
             margin-left: 0.5rem;
           }
 
-          &:hover {
+          &:disabled {
+            opacity: 0.5;;
+          }
+
+          &:hover:enabled {
             opacity: 0.5;
           }
 

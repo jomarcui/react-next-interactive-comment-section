@@ -5,24 +5,30 @@ import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
 type CommentProps = {
-  comment: Types.Comment;
-  currentUser: Types.User;
-  submitReply: (replyData: Types.Comment) => void;
+  props: {
+    comment: Types.Comment;
+    currentUser: Types.User;
+    parentCommentId: string;
+    submitReply: (commentId: string, replyData: Types.Reply) => void;
+  };
 };
 
 const Comment = ({
-  comment: {
-    content,
-    createdAt,
-    id,
-    score,
-    user: {
-      image: { webp },
-      username,
+  props: {
+    comment: {
+      content,
+      createdAt,
+      id,
+      score,
+      user: {
+        image: { webp },
+        username,
+      },
     },
+    currentUser,
+    parentCommentId,
+    submitReply,
   },
-  currentUser,
-  submitReply,
 }: CommentProps) => {
   const [replyText, setReplyText] = useState<string>("");
   const [replying, setReplying] = useState(false);
@@ -32,26 +38,26 @@ const Comment = ({
   };
 
   const handleClickReply = () => {
-    setReplyText(`@${username}`);
+    setReplyText(`@${username} `);
     setReplying(true);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const replyData: Types.Comment = {
-      id,
+    const replyData: Types.Reply = {
       content: replyText,
-      createdAt: "now",
+      createdAt: new Date(Date.now()).toLocaleDateString(),
+      id: new Date().getTime().toString(),
       replyingTo: username,
       score: 0,
       user: currentUser,
-    }
+    };
 
-    submitReply(replyData);
+    submitReply(parentCommentId, replyData);
 
     setReplying(false);
-  }
+  };
 
   return (
     <>
@@ -98,10 +104,14 @@ const Comment = ({
         <Styles.ReplyForm onSubmit={handleSubmit}>
           <Styles.FlexBoxRow>
             <div className="avatar-container">
-              <Image alt="" height="32" src={webp} width="32" />
+              <Image alt="" height="32" src={currentUser.image.webp} width="32" />
             </div>
             <div className="text-area-container">
-              <textarea name="reply" onChange={handleChangeReplyText} value={replyText} />
+              <textarea
+                name="reply"
+                onChange={handleChangeReplyText}
+                value={replyText}
+              />
             </div>
             <div className="button-container">
               <button>REPLY</button>

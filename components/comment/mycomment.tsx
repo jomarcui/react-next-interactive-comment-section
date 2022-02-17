@@ -73,33 +73,29 @@ const MyComment = ({
             <div className="created-at">{createdAt}</div>
           </div>
           <div className="controls">
-            <button className="delete">
+            <button
+              className="delete"
+              disabled={editing}
+              onClick={handleClickDelete}
+            >
               <Image
                 alt=""
                 height="16"
                 src="/images/icon-delete.svg"
                 width="16"
               />
-              <span
-                className="text"
-                data-comment-id={id}
-                onClick={handleClickDelete}
-              >
+              <span className="text" data-comment-id={id}>
                 Delete
               </span>
             </button>
-            <button>
+            <button disabled={editing} onClick={handleClickEdit}>
               <Image
                 alt=""
                 height="16"
                 src="/images/icon-edit.svg"
                 width="16"
               />
-              <span
-                className="text"
-                data-comment-id={id}
-                onClick={handleClickEdit}
-              >
+              <span className="text" data-comment-id={id}>
                 Edit
               </span>
             </button>

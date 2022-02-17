@@ -9,39 +9,47 @@ import MyComment from "./mycomment";
 type CommentsProps = {
   comments: Types.Comment[];
   currentUser: Types.User;
-  setComments: Dispatch<SetStateAction<Types.Comment[]>>
+  setComments: Dispatch<SetStateAction<Types.Comment[]>>;
 };
 
 const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
-  const submitReply = (replyData: Types.Comment) => {
+  const submitReply = (commentId: string, replyData: Types.Reply) => {
     const updatedComments = comments.map((comment) => {
-      if (comment.id === replyData.id) {
+      if (comment.id === commentId) {
         comment.replies = [...comment.replies, replyData];
       }
 
       return comment;
     });
 
-    console.log("updatedComments", updatedComments);
-
     setComments(updatedComments);
   };
 
-  const renderComment = (comment: Types.Comment) => {
+  const renderComment = (comment: Types.Comment, parentCommentId: string) => {
     const isMyComment = comment.user.username === currentUser?.username;
 
     if (isMyComment) {
       return <MyComment comment={comment} />;
     }
 
+    const props = {
+      comment,
+      currentUser,
+      parentCommentId,
+      submitReply
+    }
+
     return (
-      <Comment
-        comment={comment}
-        currentUser={currentUser}
-        submitReply={submitReply}
-      />
+      <Comment props={props}/>
     );
   };
+
+  const toComment = (reply: Types.Reply) => {
+    const { replyingTo, ...rest } = reply;
+    const comment: Types.Comment = { ...reply, replies: [] };
+
+    return comment;
+  }
 
   return (
     <Styles.Ul>
@@ -50,11 +58,11 @@ const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
 
         return (
           <Styles.Li key={id}>
-            {renderComment(comment)}
+            {renderComment(comment, id)}
 
             <Styles.ReplyUlContainer>
               {replies?.map((reply) => (
-                <Styles.Li key={reply.id}>{renderComment(reply)}</Styles.Li>
+                <Styles.Li key={reply.id}>{renderComment(toComment(reply), id)}</Styles.Li>
               ))}
             </Styles.ReplyUlContainer>
           </Styles.Li>
