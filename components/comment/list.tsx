@@ -13,6 +13,50 @@ type CommentsProps = {
 };
 
 const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
+  const submitEditedComment = (
+    commentId: string,
+    commentData: Types.Comment
+  ) => {
+    console.log("comments", comments);
+    console.log("commentData", commentData);
+
+    // const updatedComments = comments.map((comment) => {
+    //   if (comment.id === commentId) {
+    //     if (!isReply) {
+    //       comment = commentData;
+    //     } else {
+    //       const { replies } = comment;
+
+    //       const updatedReplies = replies.map((reply) => {
+    //         if (reply.id === commentData.id) {
+    //           reply = commentData;
+    //         }
+    //       })
+    //     }
+    //   }
+
+    //   return comment;
+    // });
+
+    // setComments(updatedComments);
+  };
+
+  const submitEditedReply = (replyData: Types.Reply) => {
+    let updatedComments = [...comments];
+
+    updatedComments.forEach(({ replies }) => {
+      replies.forEach((reply) => {
+        const { id } = reply;
+
+        if (id === replyData.id) {
+          reply.content = replyData.content;
+        }
+      });
+    });
+
+    setComments(updatedComments);
+  };
+
   const submitReply = (commentId: string, replyData: Types.Reply) => {
     const updatedComments = comments.map((comment) => {
       if (comment.id === commentId) {
@@ -25,31 +69,40 @@ const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
     setComments(updatedComments);
   };
 
-  const renderComment = (comment: Types.Comment, parentCommentId: string) => {
+  const renderComment = (
+    comment: Types.Comment,
+    parentCommentId: string,
+    replyingTo: string | null
+  ) => {
     const isMyComment = comment.user.username === currentUser?.username;
 
     if (isMyComment) {
-      return <MyComment comment={comment} />;
+      const myCommentProps = {
+        comment,
+        parentCommentId,
+        replyingTo,
+        submitEditedComment,
+        submitEditedReply,
+      };
+      return <MyComment props={myCommentProps} />;
     }
 
-    const props = {
+    const commentProps = {
       comment,
       currentUser,
       parentCommentId,
-      submitReply
-    }
+      submitReply,
+    };
 
-    return (
-      <Comment props={props}/>
-    );
+    return <Comment props={commentProps} />;
   };
 
-  const toComment = (reply: Types.Reply) => {
+  const extractCommentAndReplyingTo = (reply: Types.Reply) => {
     const { replyingTo, ...rest } = reply;
-    const comment: Types.Comment = { ...reply, replies: [] };
+    const comment: Types.Comment = { ...rest, replies: [] };
 
-    return comment;
-  }
+    return { comment, replyingTo };
+  };
 
   return (
     <Styles.Ul>
@@ -58,12 +111,19 @@ const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
 
         return (
           <Styles.Li key={id}>
-            {renderComment(comment, id)}
+            {renderComment(comment, id, null)}
 
             <Styles.ReplyUlContainer>
-              {replies?.map((reply) => (
-                <Styles.Li key={reply.id}>{renderComment(toComment(reply), id)}</Styles.Li>
-              ))}
+              {replies?.map((reply) => {
+                const { comment: extractedComment, replyingTo } =
+                  extractCommentAndReplyingTo(reply);
+
+                return (
+                  <Styles.Li key={reply.id}>
+                    {renderComment(extractedComment, id, replyingTo)}
+                  </Styles.Li>
+                );
+              })}
             </Styles.ReplyUlContainer>
           </Styles.Li>
         );

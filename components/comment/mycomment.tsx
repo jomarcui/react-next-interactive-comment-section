@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import * as Styles from "./comment.styles";
@@ -9,11 +9,28 @@ import { Colors } from "../../enums/colors";
 import Modal from "../ui/modal";
 
 type CommentProps = {
-  comment: Types.Comment;
+  props: {
+    comment: Types.Comment;
+    parentCommentId: string;
+    replyingTo: string | null;
+    submitEditedComment: (
+      commentId: string,
+      commentData: Types.Comment
+    ) => void;
+    submitEditedReply: (replyData: Types.Reply) => void;
+  };
 };
 
 const MyComment = ({
-  comment: {
+  props: {
+    comment,
+    parentCommentId,
+    replyingTo,
+    submitEditedComment,
+    submitEditedReply,
+  },
+}: CommentProps) => {
+  const {
     content,
     createdAt,
     id,
@@ -22,15 +39,15 @@ const MyComment = ({
       image: { webp },
       username,
     },
-  },
-}: CommentProps) => {
+  } = comment;
+
   const [commentIdToDelete, setCommentIdToDelete] = useState<string>();
   const [deleting, setDeleting] = useState(false);
   const [editing, setEditing] = useState(false);
   const [myComment, setMyComment] = useState(content);
 
   const handleChangeComment = (e: any) => {
-    setMyComment(e.currentTarget.val);
+    setMyComment(e.currentTarget.value);
   };
 
   const handleClickCancelDelete = () => {
@@ -49,6 +66,32 @@ const MyComment = ({
 
   const handleClickEdit = () => {
     setEditing(true);
+  };
+
+  const handleSubmitUpdateComment = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (replyingTo) {
+      const { replies, ...rest } = comment;
+
+      const replyData: Types.Reply = {
+        ...rest,
+        replyingTo,
+        content: myComment,
+      };
+
+      submitEditedReply(replyData);
+    } else {
+      const commentData = {
+        ...comment,
+        content: myComment,
+        id: parentCommentId,
+      };
+
+      submitEditedComment(parentCommentId, commentData);
+    }
+
+    setEditing(false);
   };
 
   return (
@@ -104,12 +147,14 @@ const MyComment = ({
 
         {editing && (
           <Styles.Content>
-            <textarea
-              onChange={handleChangeComment}
-              title="Your comment"
-              value={myComment}
-            />
-            <Styles.FormButton align="end">UPDATE</Styles.FormButton>
+            <form onSubmit={handleSubmitUpdateComment}>
+              <textarea
+                onChange={handleChangeComment}
+                title="Your comment"
+                value={myComment}
+              />
+              <Styles.FormButton align="end">UPDATE</Styles.FormButton>
+            </form>
           </Styles.Content>
         )}
 
