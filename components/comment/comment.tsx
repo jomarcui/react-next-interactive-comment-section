@@ -9,9 +9,13 @@ type CommentProps = {
     comment: Types.Comment;
     currentUser: Types.User;
     parentCommentId: string;
+    replyingTo: string | null;
+    setCommentScore: (commentId: string, isReply: boolean, newScore: number) => void;
     submitReply: (commentId: string, replyData: Types.Reply) => void;
   };
 };
+
+const SCORE_OPERAND = 1;
 
 const Comment = ({
   props: {
@@ -27,11 +31,17 @@ const Comment = ({
     },
     currentUser,
     parentCommentId,
+    replyingTo,
+    setCommentScore,
     submitReply,
   },
 }: CommentProps) => {
   const [replyText, setReplyText] = useState<string>("");
   const [replying, setReplying] = useState(false);
+
+  const decreaseScore = () => {
+    setScore(false);
+  }
 
   const handleChangeReplyText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReplyText(e.target.value);
@@ -54,19 +64,39 @@ const Comment = ({
       user: currentUser,
     };
 
+
     submitReply(parentCommentId, replyData);
 
     setReplying(false);
   };
+
+  const increaseScore = () => {
+    setScore(true);
+  }
+
+  const setScore = (increment: boolean) => {
+    const isReply = !!replyingTo;
+    let newScore = score;
+
+    if (increment) {
+      newScore += SCORE_OPERAND;
+    } else {
+      if (newScore > 0) {
+        newScore -= SCORE_OPERAND;
+      }
+    }
+
+    setCommentScore(id, isReply, newScore);
+  }
 
   return (
     <>
       <Styles.Comment>
         <div>
           <div className="score">
-            <div className="button">+</div>
+            <button className="button" onClick={increaseScore}>+</button>
             <div className="value">{score}</div>
-            <div className="button">-</div>
+            <button className="button" onClick={decreaseScore}>-</button>
           </div>
         </div>
         <div className="details">

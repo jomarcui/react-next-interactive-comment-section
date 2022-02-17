@@ -14,6 +14,7 @@ type CommentProps = {
     deleteReply: (replyId: string) => void;
     parentCommentId: string;
     replyingTo: string | null;
+    setReplyScore: (replyId: string, newScore: number) => void;
     submitEditedComment: (
       commentId: string,
       commentData: Types.Comment
@@ -28,6 +29,7 @@ const MyComment = ({
     deleteReply,
     parentCommentId,
     replyingTo,
+    setReplyScore,
     submitEditedComment,
     submitEditedReply,
   },
