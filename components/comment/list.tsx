@@ -13,6 +13,15 @@ type CommentsProps = {
 };
 
 const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
+  const deleteReply = (replyId: string) => {
+    let updatedComments = [...comments];
+
+    updatedComments.forEach((comment) => {
+      comment.replies = comment.replies.filter(({id}) => id !== replyId);
+    });
+
+    setComments(updatedComments);
+  }
   const submitEditedComment = (
     commentId: string,
     commentData: Types.Comment
@@ -79,6 +88,7 @@ const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
     if (isMyComment) {
       const myCommentProps = {
         comment,
+        deleteReply,
         parentCommentId,
         replyingTo,
         submitEditedComment,

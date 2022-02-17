@@ -11,6 +11,7 @@ import Modal from "../ui/modal";
 type CommentProps = {
   props: {
     comment: Types.Comment;
+    deleteReply: (replyId: string) => void;
     parentCommentId: string;
     replyingTo: string | null;
     submitEditedComment: (
@@ -24,6 +25,7 @@ type CommentProps = {
 const MyComment = ({
   props: {
     comment,
+    deleteReply,
     parentCommentId,
     replyingTo,
     submitEditedComment,
@@ -55,8 +57,13 @@ const MyComment = ({
   };
 
   const handleClickConfirmDelete = () => {
+    if (replyingTo) {
+      deleteReply(id);
+    } else {
+      deleteReply(parentCommentId);
+    }
+
     setDeleting(false);
-    alert(`${commentIdToDelete} is deleted!`);
   };
 
   const handleClickDelete = () => {
