@@ -10,6 +10,7 @@ import * as Styles from "./index.styles";
 import data from "../data/data.json";
 
 import Comments from "../components/comment/list";
+import NewComment from "../components/comment/new";
 
 const LOCAL_STORAGE_KEY = "comments";
 
@@ -47,6 +48,12 @@ const Home: NextPage = () => {
   });
   const [loading, setLoading] = useState(true);
 
+  const submitComment = (comment: Types.Comment) => {
+    const updatedComments = [...comments, comment];
+
+    setComments(updatedComments);
+  };
+
   useEffect(() => {
     setLoading(true);
 
@@ -71,7 +78,12 @@ const Home: NextPage = () => {
       </Head>
 
       <Styles.Main>
-        <Comments comments={comments} currentUser={currentUser} setComments={setComments} />
+        <Comments
+          comments={comments}
+          currentUser={currentUser}
+          setComments={setComments}
+        />
+        <NewComment currentUser={currentUser} submitComment={submitComment} />
       </Styles.Main>
 
       <footer className={styles.attribution}>

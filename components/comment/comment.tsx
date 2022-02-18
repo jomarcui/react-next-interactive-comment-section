@@ -39,8 +39,12 @@ const Comment = ({
   const [replyText, setReplyText] = useState<string>("");
   const [replying, setReplying] = useState(false);
 
-  const decreaseScore = () => {
+  const handleClickDecreaseScore = () => {
     setScore(false);
+  }
+
+  const handleClickIncreaseScore = () => {
+    setScore(true);
   }
 
   const handleChangeReplyText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -70,10 +74,6 @@ const Comment = ({
     setReplying(false);
   };
 
-  const increaseScore = () => {
-    setScore(true);
-  }
-
   const setScore = (increment: boolean) => {
     const isReply = !!replyingTo;
     let newScore = score;
@@ -94,9 +94,9 @@ const Comment = ({
       <Styles.Comment>
         <div>
           <div className="score">
-            <button className="button" onClick={increaseScore}>+</button>
+            <button className="button" onClick={handleClickIncreaseScore}>+</button>
             <div className="value">{score}</div>
-            <button className="button" onClick={decreaseScore}>-</button>
+            <button className="button" onClick={handleClickDecreaseScore}>-</button>
           </div>
         </div>
         <div className="details">

@@ -23,7 +23,7 @@ type CommentProps = {
   };
 };
 
-const MyComment = ({
+const Mine = ({
   props: {
     comment,
     deleteReply,
@@ -157,7 +157,7 @@ const MyComment = ({
         {editing && (
           <Styles.Content>
             <form onSubmit={handleSubmitUpdateComment}>
-              <textarea
+              <Styles.Textarea
                 onChange={handleChangeComment}
                 title="Your comment"
                 value={myComment}
@@ -195,4 +195,4 @@ const MyComment = ({
   );
 };
 
-export default MyComment;
+export default Mine;

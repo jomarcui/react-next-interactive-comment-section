@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+
 import { Colors } from "../../enums/colors";
 
 //#region Mixins
@@ -8,7 +9,7 @@ const commentContainer = css`
   border-radius: 0.5rem;
   display: flex;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 0 1rem;
   width: 100%;
 `;
 
@@ -81,20 +82,6 @@ export const Content = styled.div`
   color: ${Colors.GRAYISH_BLUE};
   font: 400 1rem "Rubik";
   margin: 1rem;
-
-  textarea {
-    border: 0.125rem solid ${Colors.MODERATE_BLUE};
-    border-radius: 1rem;
-    display: block;
-    color: ${Colors.DARK_BLUE};
-    font: 400 1rem "Rubik";
-    line-height: 1.5rem;
-    height: 9rem;
-    margin: 1rem 0;
-    padding: 1rem;
-    resize: none;
-    width: 100%;
-  }
 `;
 
 export const FlexBoxCol = styled.div`
@@ -217,6 +204,28 @@ export const Li = styled.li`
   }
 `;
 
+export const NewComment = styled.div`
+  ${commentContainer}
+
+  form {
+    display: flex;
+    width: 100%;
+
+    .user-avatar-container {
+      margin: 1rem 0;
+    }
+
+    .comment-text-container {
+      flex-grow: 1;
+      /* padding: 0 1rem; */
+    }
+
+    .button-container {
+      margin: 1rem 0;
+    }
+  }
+`;
+
 export const ReplyForm = styled.form`
   ${commentContainer}
 
@@ -258,6 +267,20 @@ export const ReplyUlContainer = styled.ul`
   margin-left: 2rem;
   padding-left: 2rem;
   width: 100%;
+`;
+
+export const Textarea = styled.textarea`
+  border: 0.125rem solid ${Colors.MODERATE_BLUE};
+  border-radius: 1rem;
+  display: flex;
+  color: ${Colors.DARK_BLUE};
+  font: 400 1rem "Rubik";
+  line-height: 1.5rem;
+  height: 9rem;
+  margin: 1rem;
+  padding: 1rem;
+  resize: none;
+  width: calc(100% - 2rem);
 `;
 
 export const Ul = styled.ul`

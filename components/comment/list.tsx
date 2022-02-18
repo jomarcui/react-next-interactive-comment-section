@@ -4,7 +4,7 @@ import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
 import Comment from "./comment";
-import MyComment from "./mycomment";
+import Mine from "./mine";
 
 type CommentsProps = {
   comments: Types.Comment[];
@@ -138,7 +138,7 @@ const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
         submitEditedComment,
         submitEditedReply,
       };
-      return <MyComment props={myCommentProps} />;
+      return <Mine props={myCommentProps} />;
     }
 
     const commentProps = {
