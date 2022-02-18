@@ -9,8 +9,8 @@ import * as Styles from "./index.styles";
 
 import data from "../data/data.json";
 
-import Comments from "../components/comment/list";
-import NewComment from "../components/comment/new";
+import ComponentsCommentList from "../components/comment/list";
+import ComponentsCommentNew from "../components/comment/new";
 
 const LOCAL_STORAGE_KEY = "comments";
 
@@ -78,12 +78,12 @@ const Home: NextPage = () => {
       </Head>
 
       <Styles.Main>
-        <Comments
+        <ComponentsCommentList
           comments={comments}
           currentUser={currentUser}
           setComments={setComments}
         />
-        <NewComment currentUser={currentUser} submitComment={submitComment} />
+        <ComponentsCommentNew currentUser={currentUser} submitComment={submitComment} />
       </Styles.Main>
 
       <footer className={styles.attribution}>

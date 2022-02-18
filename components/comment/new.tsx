@@ -9,7 +9,7 @@ type NewProps = {
   submitComment: (comment: Types.Comment) => void;
 };
 
-const New = ({
+const ComponentsCommentNew = ({
   currentUser,
   submitComment,
 }: NewProps) => {
@@ -63,4 +63,4 @@ const New = ({
   );
 };
 
-export default New;
+export default ComponentsCommentNew;

@@ -12,7 +12,7 @@ type CommentsProps = {
   setComments: Dispatch<SetStateAction<Types.Comment[]>>;
 };
 
-const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
+const ComponentsCommentList = ({ comments, currentUser, setComments }: CommentsProps) => {
   const deleteReply = (replyId: string) => {
     let updatedComments = [...comments];
 
@@ -189,4 +189,4 @@ const Comments = ({ comments, currentUser, setComments }: CommentsProps) => {
   );
 };
 
-export default Comments;
+export default ComponentsCommentList;
