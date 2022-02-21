@@ -5,47 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
+import { LOCAL_STORAGE_KEY } from "../constants/constants";
+import localStorageService from "../services/localStorage.service";
 
 import * as Types from "../types/comment";
-
-import data from "../data/data.json";
-
-const LOCAL_STORAGE_KEY = "comments";
-
-const getDefaultContext = () : CommentContextInterface => {
-  return {
-    commentContext: {
-      comments: [],
-      currentUser: { image: { png: "", webp: "" }, username: "" },
-      error: null,
-      loading: true,
-    },
-    setCommentContext: () => {}
-  };
-};
-
-const getLocalStorageData = (localStorageKey: string) => {
-  const storedData = localStorage.getItem(localStorageKey);
-
-  if (storedData) {
-    return JSON.parse(storedData);
-  }
-
-  localStorage.setItem(localStorageKey, JSON.stringify(data));
-
-  return data;
-};
-
-const CommentContext = createContext<Partial<CommentContextInterface>>({});
-
-type ContextCommentProviderProps = {
-  children?: React.ReactNode;
-};
-
-interface CommentContextInterface {
-  commentContext: ContextInterface,
-  setCommentContext: () => void,
-}
 
 interface ContextInterface {
   comments: Types.Comment[];
@@ -54,28 +17,41 @@ interface ContextInterface {
   loading: boolean;
 }
 
-const ContextCommentProvider = ({ children }: ContextCommentProviderProps) => {
-  const [commentContext, setCommentContext] = useState<ContextInterface>(
-    getDefaultContext().commentContext
-  );
+const CommentContext = createContext(
+  {} as [ContextInterface, Dispatch<SetStateAction<ContextInterface>>]
+);
 
-  const updateCommentContext = (context) => {
-    setCommentContext
-  }
+type ContextCommentProviderProps = {
+  children?: React.ReactNode;
+};
+
+const ContextCommentProvider = ({ children }: ContextCommentProviderProps) => {
+  const [commentContext, setCommentContext] = useState<ContextInterface>({
+    comments: [],
+    currentUser: {
+      image: {
+        png: "",
+        webp: "",
+      },
+      username: "",
+    },
+    error: null,
+    loading: false,
+  });
 
   useEffect(() => {
-    const data = getLocalStorageData(LOCAL_STORAGE_KEY);
+    const data = localStorageService(LOCAL_STORAGE_KEY).getData();
 
     setCommentContext({
-      comments: data.comments,
-      currentUser: data.currentUser,
+      comments: data.comments as Types.Comment[],
+      currentUser: data.currentUser as Types.User,
       error: null,
       loading: false,
     });
   }, []);
 
   return (
-    <CommentContext.Provider value={commentContext}>
+    <CommentContext.Provider value={[commentContext, setCommentContext]}>
       {children}
     </CommentContext.Provider>
   );
