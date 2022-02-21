@@ -1,73 +1,24 @@
-import { useEffect, useState } from "react";
-import type { NextPage } from "next";
+import { useContext } from "react";
 import Head from "next/head";
+import type { NextPage } from "next";
 
 import styles from "../styles/Home.module.css";
 
 import * as Types from "../types/comment";
 import * as Styles from "./index.styles";
 
-import data from "../data/data.json";
-
 import ComponentsCommentList from "../components/comment/list";
 import ComponentsCommentNew from "../components/comment/new";
+import ContainersComment from "../containers/comment";
 
-const LOCAL_STORAGE_KEY = "comments";
-
-const fetcher = async (url: string) => {
-  const response = await fetch(url);
-  const data = await response.json();
-
-  if (response.status !== 200) {
-    throw new Error(data.message);
-  }
-
-  return data;
-};
-
-const getLocalStorageData = (localStorageKey: string) => {
-  const storedData = localStorage.getItem(localStorageKey);
-
-  if (storedData) {
-    return JSON.parse(storedData);
-  }
-
-  localStorage.setItem(localStorageKey, JSON.stringify(data));
-
-  return data;
-};
+import ContextCommentProvider, { CommentContext } from "../context/comment";
 
 const Home: NextPage = () => {
-  const [comments, setComments] = useState<Types.Comment[]>([]);
-  const [currentUser, setCurrentUser] = useState<Types.User>({
-    image: {
-      png: "/./images/avatars/image-juliusomo.png",
-      webp: "/./images/avatars/image-juliusomo.webp",
-    },
-    username: "juliusomo",
-  });
-  const [loading, setLoading] = useState(true);
-
   const submitComment = (comment: Types.Comment) => {
-    const updatedComments = [...comments, comment];
+    // const updatedComments = [...comments, comment];
 
-    setComments(updatedComments);
+    // setComments(updatedComments);
   };
-
-  useEffect(() => {
-    setLoading(true);
-
-    const data = getLocalStorageData(LOCAL_STORAGE_KEY);
-
-    setComments(data.comments as Types.Comment[]);
-    setCurrentUser(data.currentUser as Types.User);
-
-    setLoading(false);
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className={styles.container}>
@@ -78,12 +29,18 @@ const Home: NextPage = () => {
       </Head>
 
       <Styles.Main>
-        <ComponentsCommentList
-          comments={comments}
-          currentUser={currentUser}
-          setComments={setComments}
-        />
-        <ComponentsCommentNew currentUser={currentUser} submitComment={submitComment} />
+        <ContextCommentProvider>
+          <ContainersComment />
+        </ContextCommentProvider>
+          {/* <ComponentsCommentList
+            comments={comments}
+            currentUser={currentUser}
+            setComments={setComments}
+          />
+          <ComponentsCommentNew
+            currentUser={currentUser}
+            submitComment={submitComment}
+          /> */}
       </Styles.Main>
 
       <footer className={styles.attribution}>
