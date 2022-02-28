@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
+
+import ComponentsScore from "../score/score";
+import Reply from "./reply";
 
 type CommentProps = {
   props: {
@@ -10,12 +13,14 @@ type CommentProps = {
     currentUser: Types.User;
     parentCommentId: string;
     replyingTo: string | null;
-    setCommentScore: (commentId: string, isReply: boolean, newScore: number) => void;
+    setCommentScore: (
+      commentId: string,
+      isReply: boolean,
+      newScore: number
+    ) => void;
     submitReply: (commentId: string, replyData: Types.Reply) => void;
   };
 };
-
-const SCORE_OPERAND = 1;
 
 const Comment = ({
   props: {
@@ -36,68 +41,31 @@ const Comment = ({
     submitReply,
   },
 }: CommentProps) => {
-  const [replyText, setReplyText] = useState<string>("");
   const [replying, setReplying] = useState(false);
 
-  const handleClickDecreaseScore = () => {
-    setScore(false);
-  }
+  const componentsScoreProps = {
+    replyingTo,
+    score,
+    setCommentScore,
+    commentId: id,
+  };
 
-  const handleClickIncreaseScore = () => {
-    setScore(true);
-  }
-
-  const handleChangeReplyText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setReplyText(e.target.value);
+  const replyProps = {
+    currentUser,
+    setReplying,
+    submitReply,
+    commentId: parentCommentId,
   };
 
   const handleClickReply = () => {
-    setReplyText(`@${username} `);
     setReplying(true);
   };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const replyData: Types.Reply = {
-      content: replyText,
-      createdAt: new Date(Date.now()).toLocaleDateString(),
-      id: new Date().getTime().toString(),
-      replyingTo: username,
-      score: 0,
-      user: currentUser,
-    };
-
-
-    submitReply(parentCommentId, replyData);
-
-    setReplying(false);
-  };
-
-  const setScore = (increment: boolean) => {
-    const isReply = !!replyingTo;
-    let newScore = score;
-
-    if (increment) {
-      newScore += SCORE_OPERAND;
-    } else {
-      if (newScore > 0) {
-        newScore -= SCORE_OPERAND;
-      }
-    }
-
-    setCommentScore(id, isReply, newScore);
-  }
 
   return (
     <>
       <Styles.Comment>
         <div>
-          <div className="score">
-            <button className="button" onClick={handleClickIncreaseScore}>+</button>
-            <div className="value">{score}</div>
-            <button className="button" onClick={handleClickDecreaseScore}>-</button>
-          </div>
+          <ComponentsScore {...componentsScoreProps} />
         </div>
         <div className="details">
           <div className="comment-header">
@@ -130,25 +98,7 @@ const Comment = ({
         </div>
       </Styles.Comment>
 
-      {replying && (
-        <Styles.ReplyForm onSubmit={handleSubmit}>
-          <Styles.FlexBoxRow>
-            <div className="avatar-container">
-              <Image alt="" height="32" src={currentUser.image.webp} width="32" />
-            </div>
-            <div className="text-area-container">
-              <textarea
-                name="reply"
-                onChange={handleChangeReplyText}
-                value={replyText}
-              />
-            </div>
-            <div className="button-container">
-              <button>REPLY</button>
-            </div>
-          </Styles.FlexBoxRow>
-        </Styles.ReplyForm>
-      )}
+      {replying && <Reply {...replyProps} />}
     </>
   );
 };
