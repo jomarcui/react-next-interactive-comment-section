@@ -1,22 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
-import ComponentsScore from "../score/score";
-import Reply from "./reply";
+import ComponentsScore from "../Score";
+import ComponentsCommentReplyForm from "./ReplyForm";
 
 type CommentProps = {
   props: {
     comment: Types.Comment;
     currentUser: Types.User;
     parentCommentId: string;
-    replyingTo: string | null;
     setCommentScore: (
       commentId: string,
-      isReply: boolean,
-      newScore: number
+      newScore: number,
+      replyingTo: string
     ) => void;
     submitReply: (commentId: string, replyData: Types.Reply) => void;
   };
@@ -24,30 +23,30 @@ type CommentProps = {
 
 const Comment = ({
   props: {
-    comment: {
-      content,
-      createdAt,
-      id,
-      score,
-      user: {
-        image: { webp },
-        username,
-      },
-    },
+    comment,
     currentUser,
     parentCommentId,
-    replyingTo,
     setCommentScore,
     submitReply,
   },
 }: CommentProps) => {
+  const {
+    content,
+    createdAt,
+    id,
+    score,
+    user: {
+      image: { webp },
+      username,
+    },
+  } = comment;
   const [replying, setReplying] = useState(false);
 
   const componentsScoreProps = {
-    replyingTo,
     score,
     setCommentScore,
     commentId: id,
+    replyingTo: "",
   };
 
   const replyProps = {
@@ -55,6 +54,7 @@ const Comment = ({
     setReplying,
     submitReply,
     commentId: parentCommentId,
+    replyingTo: username,
   };
 
   const handleClickReply = () => {
@@ -98,7 +98,7 @@ const Comment = ({
         </div>
       </Styles.Comment>
 
-      {replying && <Reply {...replyProps} />}
+      {replying && <ComponentsCommentReplyForm {...replyProps} />}
     </>
   );
 };

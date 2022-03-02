@@ -7,16 +7,15 @@ import styles from "../styles/Home.module.css";
 import * as Types from "../types/comment";
 import * as Styles from "./index.styles";
 
-import ComponentsCommentList from "../components/comment/list";
-import ComponentsCommentNew from "../components/comment/new";
-import ContainersComment from "../containers/comment";
+import ComponentsCommentList from "../components/Comment/List";
+import ComponentsCommentNew from "../components/Comment/New";
+import ContainersComment from "../containers/Comment";
 
 import ContextCommentProvider, { CommentContext } from "../context/comment";
 
 const Home: NextPage = () => {
   const submitComment = (comment: Types.Comment) => {
     // const updatedComments = [...comments, comment];
-
     // setComments(updatedComments);
   };
 
@@ -32,7 +31,7 @@ const Home: NextPage = () => {
         <ContextCommentProvider>
           <ContainersComment />
         </ContextCommentProvider>
-          {/* <ComponentsCommentList
+        {/* <ComponentsCommentList
             comments={comments}
             currentUser={currentUser}
             setComments={setComments}

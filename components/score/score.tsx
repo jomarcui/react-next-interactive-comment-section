@@ -1,45 +1,33 @@
 const SCORE_OPERAND = 1;
 
-type ComponentsScoreProps = {
+type ScoreProps = {
   commentId: string;
-  replyingTo: string | null;
+  replyingTo: string;
   score: number;
   setCommentScore: (
     commentId: string,
-    isReply: boolean,
-    newScore: number
+    newScore: number,
+    replyingTo: string
   ) => void;
 };
 
-const ComponentsScore = ({
+const Score = ({
   commentId,
   replyingTo,
   score,
   setCommentScore,
-}: ComponentsScoreProps) => {
-  const handleClickIncreaseScore = () => {
-    const increment = true;
-    setScore(increment);
-  };
+}: ScoreProps) => {
+  const handleClickIncreaseScore = () =>
+    setScore(commentId, increaseScore(true), replyingTo);
 
-  const handleClickDecreaseScore = () => {
-    const increment = true;
-    setScore(!increment);
-  };
+  const handleClickDecreaseScore = () =>
+    setScore(commentId, increaseScore(false), replyingTo);
 
-  const setScore = (increment = true) => {
-    const isReply = !!replyingTo;
+  const increaseScore = (increment: boolean) =>
+    increment ? (score += SCORE_OPERAND) : (score -= SCORE_OPERAND);
 
-    let newScore = score;
-
-    if (increment) {
-      newScore += SCORE_OPERAND;
-    } else {
-      newScore -= SCORE_OPERAND;
-    }
-
-    setCommentScore(commentId, isReply, newScore);
-  };
+  const setScore = (commentId: string, newScore: number, replyingTo: string) =>
+    setCommentScore(commentId, newScore, replyingTo);
 
   return (
     <div className="score">
@@ -54,4 +42,4 @@ const ComponentsScore = ({
   );
 };
 
-export default ComponentsScore;
+export default Score;

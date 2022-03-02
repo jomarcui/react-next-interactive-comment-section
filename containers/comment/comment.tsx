@@ -2,8 +2,8 @@ import { useContext } from "react";
 
 import * as Types from "../../types/comment";
 
-import ComponentsCommentList from "../../components/comment/list";
 import { CommentContext } from "../../context/comment";
+import ComponentsCommentList from "../../components/Comment/List";
 
 const ContainersComment = () => {
   const [commentContext, setCommentContext] = useContext(CommentContext);
@@ -31,12 +31,12 @@ const ContainersComment = () => {
 
   const setCommentScore = (
     commentId: string,
-    isReply: boolean,
-    newScore: number
+    newScore: number,
+    replyingTo: string
   ) => {
     const updatedComments = [...comments];
 
-    if (isReply) {
+    if (!!replyingTo) {
       updatedComments.forEach(({ replies }) => {
         replies.forEach((reply) => {
           const { id } = reply;

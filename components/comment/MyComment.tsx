@@ -4,36 +4,24 @@ import Image from "next/image";
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
-import { Colors } from "../../enums/colors";
+import ComponentsCommentDelete from "./Delete";
+import ComponentsScore from "../Score";
 
-import Modal from "../ui/modal";
-
-type CommentProps = {
+type MyCommentProps = {
   props: {
     comment: Types.Comment;
-    deleteReply: (replyId: string) => void;
     parentCommentId: string;
-    replyingTo: string | null;
-    setReplyScore: (replyId: string, newScore: number) => void;
+    deleteReply: (replyId: string) => void;
     submitEditedComment: (
       commentId: string,
       commentData: Types.Comment
     ) => void;
-    submitEditedReply: (replyData: Types.Reply) => void;
   };
 };
 
-const Mine = ({
-  props: {
-    comment,
-    deleteReply,
-    parentCommentId,
-    replyingTo,
-    setReplyScore,
-    submitEditedComment,
-    submitEditedReply,
-  },
-}: CommentProps) => {
+const MyComment = ({
+  props: { comment, parentCommentId, deleteReply, submitEditedComment },
+}: MyCommentProps) => {
   const {
     content,
     createdAt,
@@ -50,56 +38,37 @@ const Mine = ({
   const [editing, setEditing] = useState(false);
   const [myComment, setMyComment] = useState(content);
 
-  const handleChangeComment = (e: any) => {
-    setMyComment(e.currentTarget.value);
+  const componentsScoreProps = {
+    score,
+    commentId: id,
+    replyingTo: "",
+    setCommentScore: () => {},
   };
 
-  const handleClickCancelDelete = () => {
+  const confirmDelete = () => {
+    deleteReply(parentCommentId);
     setDeleting(false);
   };
 
-  const handleClickConfirmDelete = () => {
-    if (replyingTo) {
-      deleteReply(id);
-    } else {
-      deleteReply(parentCommentId);
-    }
-
-    setDeleting(false);
-  };
+  const handleChangeComment = (e: any) => setMyComment(e.currentTarget.value);
 
   const handleClickDelete = () => {
     setCommentIdToDelete(id);
     setDeleting(true);
   };
 
-  const handleClickEdit = () => {
-    setEditing(true);
-  };
+  const handleClickEdit = () => setEditing(true);
 
   const handleSubmitUpdateComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (replyingTo) {
-      const { replies, ...rest } = comment;
+    const commentData = {
+      ...comment,
+      content: myComment,
+      id: parentCommentId,
+    };
 
-      const replyData: Types.Reply = {
-        ...rest,
-        replyingTo,
-        content: myComment,
-      };
-
-      submitEditedReply(replyData);
-    } else {
-      const commentData = {
-        ...comment,
-        content: myComment,
-        id: parentCommentId,
-      };
-
-      submitEditedComment(parentCommentId, commentData);
-    }
-
+    submitEditedComment(parentCommentId, commentData);
     setEditing(false);
   };
 
@@ -107,9 +76,7 @@ const Mine = ({
     <Styles.Comment>
       <div>
         <div className="score">
-          <div className="button">+</div>
-          <div className="value">{score}</div>
-          <div className="button">-</div>
+          <ComponentsScore {...componentsScoreProps} />
         </div>
       </div>
       <div className="details">
@@ -171,28 +138,13 @@ const Mine = ({
       </div>
 
       {deleting && (
-        <Modal show>
-          <p>Delete comment</p>
-          <p>
-            Are you sure you want to delete this comment? This will remove the
-            comment and can&lsquo;t be undone.
-          </p>
-          <Styles.ModalButton
-            backgroundColor={Colors.GRAYISH_BLUE}
-            onClick={handleClickCancelDelete}
-          >
-            NO, CANCEL
-          </Styles.ModalButton>
-          <Styles.ModalButton
-            backgroundColor={Colors.SOFT_RED}
-            onClick={handleClickConfirmDelete}
-          >
-            YES, DELETE
-          </Styles.ModalButton>
-        </Modal>
+        <ComponentsCommentDelete
+          confirmDelete={confirmDelete}
+          setDeleting={setDeleting}
+        />
       )}
     </Styles.Comment>
   );
 };
 
-export default Mine;
+export default MyComment;

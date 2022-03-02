@@ -1,20 +1,22 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
-import Comment from "./comment";
-import Mine from "./mine";
+import ComponentsComment from "./Comment";
+import ComponentsCommentMine from "./MyComment";
+import ComponentsCommentMyReply from "./MyReply";
+import ComponentsCommentReply from "./Reply";
 
-type CommentsProps = {
+type ComponentsCommentListProps = {
   props: {
     comments: Types.Comment[];
     currentUser: Types.User;
     deleteReply: (replyId: string) => void;
     setCommentScore: (
       commentId: string,
-      isReply: boolean,
-      newScore: number
+      newScore: number,
+      replyingTo: string
     ) => void;
     setReplyScore: (replyId: string, newScore: number) => void;
     submitEditedComment: (
@@ -37,68 +39,84 @@ const ComponentsCommentList = ({
     submitEditedReply,
     submitReply,
   },
-}: CommentsProps) => {
+}: ComponentsCommentListProps) => {
   const renderComment = (
     comment: Types.Comment,
-    parentCommentId: string,
-    replyingTo: string | null
+    currentUser: Types.User,
+    parentCommentId: string
   ) => {
-    const isMyComment = comment.user.username === currentUser?.username;
+    const isMyComment = comment.user.username === currentUser.username;
 
-    if (isMyComment && !!replyingTo) {
+    if (isMyComment) {
       const myCommentProps = {
         comment,
-        deleteReply,
         parentCommentId,
-        replyingTo,
+        deleteReply,
         setReplyScore,
         submitEditedComment,
         submitEditedReply,
       };
 
-      return <Mine props={myCommentProps} />;
+      return <ComponentsCommentMine props={myCommentProps} />;
     }
 
     const commentProps = {
       comment,
       currentUser,
       parentCommentId,
-      replyingTo,
       setCommentScore,
       submitReply,
     };
 
-    return <Comment props={commentProps} />;
+    return <ComponentsComment props={commentProps} />;
   };
 
-  const extractCommentAndReplyingTo = (reply: Types.Reply) => {
-    const { replyingTo, ...rest } = reply;
-    const comment: Types.Comment = { ...rest, replies: [] };
+  const renderReply = (
+    currentUser: Types.User,
+    parentCommentId: string,
+    reply: Types.Reply
+  ) => {
+    const isMyReply = reply.user.username === currentUser.username;
 
-    return { comment, replyingTo };
+    if (isMyReply) {
+      const myReplyProps = {
+        parentCommentId,
+        reply,
+        deleteReply,
+        setReplyScore,
+        submitEditedComment,
+        submitEditedReply,
+      };
+
+      return <ComponentsCommentMyReply props={myReplyProps} />;
+    }
+
+    const commentProps = {
+      currentUser,
+      parentCommentId,
+      reply,
+      setCommentScore,
+      submitReply,
+    };
+
+    return <ComponentsCommentReply props={commentProps} />;
   };
 
   return (
     <Styles.Ul>
       {comments.map((comment) => {
-        const { id, replies } = comment;
+        const { id: parentCommentId, replies } = comment;
 
         return (
-          <Styles.Li key={id}>
-            {renderComment(comment, id, null)}
+          <Styles.Li key={parentCommentId}>
+            {renderComment(comment, currentUser, parentCommentId)}
 
             <Styles.ReplyUlContainer>
-              {replies.map((reply) => {
-                const { id: replyId } = reply;
-                const { comment: extractedComment, replyingTo } =
-                  extractCommentAndReplyingTo(reply);
-
-                return (
-                  <Styles.Li key={replyId}>
-                    {renderComment(extractedComment, id, replyingTo)}
-                  </Styles.Li>
-                );
-              })}
+              {replies.map((reply) => (
+                <Styles.Li key={reply.id}>
+                  {renderReply(currentUser, parentCommentId, reply)}
+                </Styles.Li>
+              ))}
             </Styles.ReplyUlContainer>
           </Styles.Li>
         );

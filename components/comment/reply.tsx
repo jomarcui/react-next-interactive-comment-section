@@ -1,85 +1,100 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
+import ComponentsScore from "../Score/Score";
+import ComponentsCommentReplyForm from "./ReplyForm";
+
 type ReplyProps = {
-  commentId: string;
-  currentUser: Types.User;
-  setReplying: Dispatch<SetStateAction<boolean>>;
-  submitReply: (commentId: string, replyData: Types.Reply) => void;
+  props: {
+    reply: Types.Reply;
+    currentUser: Types.User;
+    parentCommentId: string;
+    setCommentScore: (
+      commentId: string,
+      newScore: number,
+      replyingTo: string
+    ) => void;
+    submitReply: (commentId: string, replyData: Types.Reply) => void;
+  };
 };
 
 const Reply = ({
-  commentId,
-  currentUser,
-  setReplying,
-  submitReply,
+  props: { reply, currentUser, parentCommentId, setCommentScore, submitReply },
 }: ReplyProps) => {
   const {
-    image: { webp },
-    username,
-  } = currentUser;
+    content,
+    createdAt,
+    id,
+    replyingTo,
+    score,
+    user: {
+      image: { webp },
+      username,
+    },
+  } = reply;
+  const [replying, setReplying] = useState(false);
 
-  const replyTextInputRef = useRef<HTMLTextAreaElement>(null);
-  const [replyText, setReplyText] = useState<string>(`@${username} `);
-
-  useEffect(() => {
-    const inputRef = replyTextInputRef.current;
-    const inputRefValLength = inputRef?.value.length || 0;
-
-    inputRef?.focus();
-    inputRef?.setSelectionRange(inputRefValLength, inputRefValLength);
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const replyData: Types.Reply = {
-      content: replyText,
-      createdAt: new Date(Date.now()).toLocaleDateString(),
-      id: new Date().getTime().toString(),
-      replyingTo: username,
-      score: 0,
-      user: currentUser,
-    };
-
-    submitReply(commentId, replyData);
-
-    setReplying(false);
+  const componentsScoreProps = {
+    replyingTo,
+    score,
+    setCommentScore,
+    commentId: id,
   };
 
-  const handleChangeReplyText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setReplyText(e.target.value);
+  const replyProps = {
+    currentUser,
+    setReplying,
+    submitReply,
+    commentId: parentCommentId,
+    replyingTo: username,
+  };
+
+  const handleClickReply = () => {
+    setReplying(true);
   };
 
   return (
-    <Styles.ReplyForm onSubmit={handleSubmit}>
-      <Styles.FlexBoxRow>
-        <div className="avatar-container">
-          <Image alt="" height="32" src={webp} width="32" />
+    <>
+      <Styles.Comment>
+        <div>
+          <ComponentsScore {...componentsScoreProps} />
         </div>
-        <div className="text-area-container">
-          <textarea
-            name="reply"
-            onChange={handleChangeReplyText}
-            ref={replyTextInputRef}
-            title="Your reply."
-            value={replyText}
-          />
+        <div className="details">
+          <div className="comment-header">
+            <div className="user-info">
+              <div className="avatar">
+                <Image alt="" height="32" src={webp} width="32" />
+              </div>
+              <div className="username">{username}</div>
+              <div className="created-at">{createdAt}</div>
+            </div>
+            <div className="controls">
+              <button>
+                <Image
+                  alt=""
+                  height="16"
+                  src="/images/icon-reply.svg"
+                  width="16"
+                />
+                <span
+                  className="text"
+                  data-comment-id={id}
+                  onClick={handleClickReply}
+                >
+                  Reply
+                </span>
+              </button>
+            </div>
+          </div>
+          <Styles.Content>{content}</Styles.Content>
         </div>
-        <div className="button-container">
-          <button>REPLY</button>
-        </div>
-      </Styles.FlexBoxRow>
-    </Styles.ReplyForm>
+      </Styles.Comment>
+
+      {replying && <ComponentsCommentReplyForm {...replyProps} />}
+    </>
   );
 };
 
