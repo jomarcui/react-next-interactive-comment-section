@@ -4,12 +4,12 @@ import Image from "next/image";
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
-import ComponentsScore from "../Score/Score";
+import ComponentsScore from "../Score_";
 import ComponentsCommentReplyForm from "./ReplyForm";
 
-type ReplyProps = {
+type CommentProps = {
   props: {
-    reply: Types.Reply;
+    comment: Types.Comment;
     currentUser: Types.User;
     parentCommentId: string;
     setCommentScore: (
@@ -21,27 +21,32 @@ type ReplyProps = {
   };
 };
 
-const Reply = ({
-  props: { reply, currentUser, parentCommentId, setCommentScore, submitReply },
-}: ReplyProps) => {
+const Comment = ({
+  props: {
+    comment,
+    currentUser,
+    parentCommentId,
+    setCommentScore,
+    submitReply,
+  },
+}: CommentProps) => {
   const {
     content,
     createdAt,
     id,
-    replyingTo,
     score,
     user: {
       image: { webp },
       username,
     },
-  } = reply;
+  } = comment;
   const [replying, setReplying] = useState(false);
 
   const componentsScoreProps = {
-    replyingTo,
     score,
     setCommentScore,
     commentId: id,
+    replyingTo: "",
   };
 
   const replyProps = {
@@ -98,4 +103,4 @@ const Reply = ({
   );
 };
 
-export default Reply;
+export default Comment;

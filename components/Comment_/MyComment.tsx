@@ -5,7 +5,7 @@ import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
 import ComponentsCommentDelete from "./Delete";
-import ComponentsScore from "../Score";
+import ComponentsScore from "../Score_";
 
 type MyCommentProps = {
   props: {

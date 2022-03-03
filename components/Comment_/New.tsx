@@ -9,10 +9,7 @@ type NewProps = {
   submitComment: (comment: Types.Comment) => void;
 };
 
-const ComponentsCommentNew = ({
-  currentUser,
-  submitComment,
-}: NewProps) => {
+const New = ({ currentUser, submitComment }: NewProps) => {
   const {
     image: { webp },
     username,
@@ -35,8 +32,8 @@ const ComponentsCommentNew = ({
       id: new Date().getTime().toString(),
       replies: [],
       score: 0,
-      user: currentUser
-    }
+      user: currentUser,
+    };
 
     submitComment(newCommentData);
 
@@ -63,4 +60,4 @@ const ComponentsCommentNew = ({
   );
 };
 
-export default ComponentsCommentNew;
+export default New;

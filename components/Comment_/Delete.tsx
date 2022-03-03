@@ -4,7 +4,7 @@ import * as Styles from "./comment.styles";
 
 import { Colors } from "../../enums/colors";
 
-import Modal from "../Ui/modal";
+import Modal from "../Ui_/modal";
 
 type DeleteProps = {
   confirmDelete: () => void;

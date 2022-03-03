@@ -3,7 +3,7 @@ import { useContext } from "react";
 import * as Types from "../../types/comment";
 
 import { CommentContext } from "../../context/comment";
-import ComponentsCommentList from "../../components/Comment/List";
+import ComponentsCommentList from "../../components/Comment_/List";
 
 const ContainersComment = () => {
   const [commentContext, setCommentContext] = useContext(CommentContext);
