@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { Colors } from "../../enums/colors";
+import { Media } from "../../enums/media";
 
 export const Score = styled.div`
   background-color: ${Colors.LIGHT_GRAY};
@@ -13,6 +14,10 @@ export const Score = styled.div`
     display: flex;
     justify-content: center;
     padding: 0.5rem;
+  }
+
+  @media (max-width: ${Media.X_SMALL}) {
+    flex-direction: row;
   }
 `;
 

@@ -69,32 +69,19 @@ const Comment = ({
         </div>
         <div className="details">
           <div className="header">
-            <div className="user-info">
-              <div className="avatar">
-                <Image alt="" height="32" src={webp} width="32" />
-              </div>
-              <div className="username">{username}</div>
-              <div className="created-at">{createdAt}</div>
+            <div className="avatar">
+              <Image alt="" height="32" src={webp} width="32" />
             </div>
-            <div className="controls">
-              <button>
-                <Image
-                  alt=""
-                  height="16"
-                  src="/images/icon-reply.svg"
-                  width="16"
-                />
-                <span
-                  className="text"
-                  data-comment-id={id}
-                  onClick={handleClickReply}
-                >
-                  Reply
-                </span>
-              </button>
-            </div>
+            <div className="username">{username}</div>
+            <div className="created-at">{createdAt}</div>
+            <Styles.Content>{content}</Styles.Content>
           </div>
-          <Styles.Content>{content}</Styles.Content>
+        </div>
+        <div className="controls">
+          <Styles.ControlButton isDelete={false} onClick={handleClickReply}>
+            <Image alt="" height="16" src="/images/icon-reply.svg" width="16" />
+            <span className="text">Reply</span>
+          </Styles.ControlButton>
         </div>
       </Styles.Comment>
 

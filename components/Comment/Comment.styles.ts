@@ -44,6 +44,10 @@ interface IModalButton {
   backgroundColor: string;
 }
 
+interface IControlButton {
+  isDelete: boolean;
+}
+
 //#endregion
 
 export const FormButton = styled.button`
@@ -76,25 +80,66 @@ export const Comment = styled.div`
   background-color: ${Colors.WHITE};
   border-radius: 0.5rem;
   display: flex;
-  flex-flow: row wrap;
   font: 500 1rem "Rubik";
+  gap: 1rem;
   padding: 1.375rem;
-  width: 100%;
+  position: relative;
   margin-top: 1rem;
 
-  .header {
-    display: flex;
-    flex-flow: row wrap;
+  .details {
+    .header {
+      align-items: center;
+      display: flex;
+      flex-flow: row wrap;
+      gap: 1rem;
+
+      .user-info {
+        display: flex;
+      }
+    }
+  }
+
+  .controls {
+    position: absolute;
+    right: 1.375rem;
   }
 
   @media (max-width: ${Media.X_SMALL}) {
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    .controls {
+      position: initial;
+      order: 2;
+    }
+
+    .details {
+      flex: 1 100%;
+      order: 1;
+      padding: 0;
+    }
+
+    .score-container {
+      order: 2;
+    }
   }
+`;
+
+export const ControlButton = styled.button<IControlButton>`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${({ isDelete }) => isDelete ? Colors.PALE_RED : Colors.MODERATE_BLUE};
+  cursor: pointer;
+  display: flex;
+  font: 500 1rem "Rubik";
+  gap: 0.5rem;
+  height: 100%;
 `;
 
 export const Content = styled.div`
   color: ${Colors.GRAYISH_BLUE};
   font: 400 1rem "Rubik";
-  width: 500px;
 `;
 
 export const FlexBoxCol = styled.div`
@@ -197,7 +242,7 @@ export const CommentUlContainer = styled.ul`
 `;
 
 export const CommentUlContainerLi = styled.li`
-  ${flexBoxCol}
+  /* ${flexBoxCol}
 
   .details {
     flex-grow: 1;
@@ -272,5 +317,5 @@ export const CommentUlContainerLi = styled.li`
         }
       }
     }
-  }
+  } */
 `;
