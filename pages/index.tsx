@@ -7,8 +7,8 @@ import styles from "../styles/Home.module.css";
 import * as Types from "../types/comment";
 import * as Styles from "./index.styles";
 
-import ComponentsCommentList from "../components/Comment_/List";
-import ComponentsCommentNew from "../components/Comment_/New";
+import ComponentsCommentList from "../components/Comment/List";
+import ComponentsCommentNew from "../components/Comment/New";
 import ContainersComment from "../containers/Comment";
 
 import ContextCommentProvider, { CommentContext } from "../context/comment";
