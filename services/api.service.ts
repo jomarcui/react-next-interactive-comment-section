@@ -12,7 +12,7 @@ const apiService = {
       content: replyText,
       createdAt: new Date(Date.now()).toLocaleDateString(),
       id: new Date().getTime().toString(),
-      replyingTo: replyingTo,
+      //replyingTo: replyingTo,
       score: 0,
       user: currentUser,
       replies: [],
@@ -22,7 +22,7 @@ const apiService = {
 
     if (!!comment) {
       console.log("Test");
-      comment.replies = [...comment.replies, reply];
+      //comment.replies = [...comment.replies, reply];
     }
   },
 };
