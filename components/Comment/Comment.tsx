@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-import * as Styles from "./comment.styles";
+import * as Styles from "./_comment.styles";
 import * as Types from "../../types/comment";
 
 import ComponentsScore from "../Score";
