@@ -59,37 +59,32 @@ const Reply = ({
   return (
     <>
       <Styles.Comment>
-        <div>
+        <div className="score">
           <ComponentsScore {...componentsScoreProps} />
         </div>
         <div className="details">
-          <div className="comment-header">
-            <div className="user-info">
-              <div className="avatar">
-                <Image alt="" height="32" src={webp} width="32" />
-              </div>
-              <div className="username">{username}</div>
-              <div className="created-at">{createdAt}</div>
-            </div>
-            <div className="controls">
-              <button>
-                <Image
-                  alt=""
-                  height="16"
-                  src="/images/icon-reply.svg"
-                  width="16"
-                />
-                <span
-                  className="text"
-                  data-comment-id={id}
-                  onClick={handleClickReply}
-                >
-                  Reply
-                </span>
-              </button>
-            </div>
+          <div className="header">
+            <Styles.Avatar>
+              <Image alt="" height="32" src={webp} width="32" />
+            </Styles.Avatar>
+            <Styles.Username>{username}</Styles.Username>
+            <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
           </div>
-          <Styles.Content>{content}</Styles.Content>
+          <div className="content">
+            <Styles.Content>{content}</Styles.Content>
+          </div>
+        </div>
+        <div className="controls">
+          <Styles.ControlButton isDelete={false}>
+            <Image alt="" height="16" src="/images/icon-reply.svg" width="16" />
+            <span
+              className="text"
+              data-comment-id={id}
+              onClick={handleClickReply}
+            >
+              Reply
+            </span>
+          </Styles.ControlButton>
         </div>
       </Styles.Comment>
 

@@ -103,25 +103,25 @@ const List = ({
   };
 
   return (
-    <Styles.CommentUlContainer>
+    <Styles.CommentUl>
       {comments.map((comment) => {
         const { id: parentCommentId, replies } = comment;
 
         return (
-          <Styles.CommentUlContainerLi key={parentCommentId}>
+          <li key={parentCommentId}>
             {renderComment(comment, currentUser, parentCommentId)}
 
-            <Styles.ReplyUlContainer>
+            <Styles.ReplyUl>
               {replies.map((reply) => (
-                <Styles.CommentUlContainerLi key={reply.id}>
+                <li key={reply.id}>
                   {renderReply(currentUser, parentCommentId, reply)}
-                </Styles.CommentUlContainerLi>
+                </li>
               ))}
-            </Styles.ReplyUlContainer>
-          </Styles.CommentUlContainerLi>
+            </Styles.ReplyUl>
+          </li>
         );
       })}
-    </Styles.CommentUlContainer>
+    </Styles.CommentUl>
   );
 };
 

@@ -81,61 +81,61 @@ const MyComment = ({
 
   return (
     <Styles.Comment>
-      <div>
+      <div className="score">
         <ComponentsScore {...componentsScoreProps} />
       </div>
       <div className="details">
-        <div className="comment-header">
-          <div className="user-info">
-            <div className="avatar">
-              <Image alt="" height="32" src={webp} width="32" />
-            </div>
-            <div className="username">
-              {username}
-              <span className="you">you</span>
-            </div>
-            <div className="created-at">{createdAt}</div>
-          </div>
-          <div className="controls">
-            <button
-              className="delete"
-              disabled={editing}
-              onClick={handleClickDelete}
-            >
-              <Image
-                alt=""
-                height="16"
-                src="/images/icon-delete.svg"
-                width="16"
-              />
-              <span className="text">Delete</span>
-            </button>
-            <button disabled={editing} onClick={handleClickEdit}>
-              <Image
-                alt=""
-                height="16"
-                src="/images/icon-edit.svg"
-                width="16"
-              />
-              <span className="text">Edit</span>
-            </button>
-          </div>
+        <div className="header">
+          <Styles.Avatar>
+            <Image alt="" height="32" src={webp} width="32" />
+          </Styles.Avatar>
+          <Styles.Username>
+            {username}
+            <Styles.You>you</Styles.You>
+          </Styles.Username>
+          <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
         </div>
+        <div className="content">
+          {editing && (
+            <Styles.Content>
+              <form onSubmit={handleSubmitUpdateComment}>
+                <Styles.Textarea
+                  onChange={handleChangeComment}
+                  title="Your comment"
+                  value={myComment}
+                />
+                <div className="button-container">
+                  <Styles.FormButton>UPDATE</Styles.FormButton>
+                </div>
+              </form>
+            </Styles.Content>
+          )}
 
-        {editing && (
-          <Styles.Content>
-            <form onSubmit={handleSubmitUpdateComment}>
-              <Styles.Textarea
-                onChange={handleChangeComment}
-                title="Your comment"
-                value={myComment}
-              />
-              <Styles.FormButton>UPDATE</Styles.FormButton>
-            </form>
-          </Styles.Content>
-        )}
-
-        {!editing && <Styles.Content>{content}</Styles.Content>}
+          {!editing && <Styles.Content>{content}</Styles.Content>}
+        </div>
+      </div>
+      <div className="controls">
+        <Styles.ControlButton
+          className="delete"
+          disabled={editing}
+          isDelete
+          onClick={handleClickDelete}
+        >
+          <Image alt="" height="16" src="/images/icon-delete.svg" width="16" />
+          <span className="text" data-comment-id={id}>
+            Delete
+          </span>
+        </Styles.ControlButton>
+        <Styles.ControlButton
+          disabled={editing}
+          isDelete={false}
+          onClick={handleClickEdit}
+        >
+          <Image alt="" height="16" src="/images/icon-edit.svg" width="16" />
+          <span className="text" data-comment-id={id}>
+            Edit
+          </span>
+        </Styles.ControlButton>
       </div>
 
       {deleting && (

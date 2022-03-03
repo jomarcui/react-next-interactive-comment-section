@@ -64,16 +64,18 @@ const Comment = ({
   return (
     <>
       <Styles.Comment>
-        <div className="score-container">
+        <div className="score">
           <ComponentsScore {...componentsScoreProps} />
         </div>
         <div className="details">
           <div className="header">
-            <div className="avatar">
+            <Styles.Avatar>
               <Image alt="" height="32" src={webp} width="32" />
-            </div>
-            <div className="username">{username}</div>
-            <div className="created-at">{createdAt}</div>
+            </Styles.Avatar>
+            <Styles.Username>{username}</Styles.Username>
+            <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
+          </div>
+          <div className="content">
             <Styles.Content>{content}</Styles.Content>
           </div>
         </div>

@@ -16,11 +16,17 @@ export const Overlay = styled.div`
 `;
 
 export const Modal = styled.div`
-background-color: ${Colors.WHITE};
-border-radius: 7px;
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
-padding: 2rem;
-width: 400px;
+  background-color: ${Colors.WHITE};
+  border-radius: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 375px;
+  padding: 2rem;
+
+  .button-container {
+    display: flex;
+    flex: 1 100%;
+    gap: 1rem;
+  }
 `;
