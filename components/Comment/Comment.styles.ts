@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 import { Colors } from "../../enums/colors";
+import { Media } from "../../enums/media";
 
 //#region Mixins
 
@@ -72,16 +73,28 @@ export const ModalButton = styled.button<IModalButton>`
 `;
 
 export const Comment = styled.div`
-  ${commentContainer}
+  background-color: ${Colors.WHITE};
+  border-radius: 0.5rem;
+  display: flex;
+  flex-flow: row wrap;
   font: 500 1rem "Rubik";
+  padding: 1.375rem;
+  width: 100%;
   margin-top: 1rem;
+
+  .header {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  @media (max-width: ${Media.X_SMALL}) {
+  }
 `;
 
 export const Content = styled.div`
-  ${marginY}
   color: ${Colors.GRAYISH_BLUE};
   font: 400 1rem "Rubik";
-  margin: 1rem;
+  width: 500px;
 `;
 
 export const FlexBoxCol = styled.div`
@@ -137,7 +150,7 @@ export const ReplyForm = styled.form`
     flex-grow: 1;
   }
 
-  @media (max-width: 576px) {
+  @media (max-width: ${Media.X_SMALL}) {
     .avatar-container {
       flex-grow: 1;
       margin: 1.375rem 0;

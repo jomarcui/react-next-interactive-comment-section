@@ -1,3 +1,5 @@
+import * as Styles from "./Score.styles";
+
 const SCORE_OPERAND = 1;
 
 type ScoreProps = {
@@ -30,15 +32,15 @@ const Score = ({
     setCommentScore(commentId, newScore, replyingTo);
 
   return (
-    <div className="score">
-      <button className="button" onClick={handleClickIncreaseScore}>
-        +
-      </button>
-      <div className="value">{score}</div>
-      <button className="button" onClick={handleClickDecreaseScore}>
-        -
-      </button>
-    </div>
+    <Styles.Score>
+      <div>
+        <Styles.Button onClick={handleClickIncreaseScore}>+</Styles.Button>
+      </div>
+      <Styles.Value>{score}</Styles.Value>
+      <div>
+        <Styles.Button onClick={handleClickDecreaseScore}>-</Styles.Button>
+      </div>
+    </Styles.Score>
   );
 };
 

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import * as Styles from "./_modal.styles";
+import * as Styles from "./Modal.styles";
 
 type ModalProps = {
   children: ReactNode;

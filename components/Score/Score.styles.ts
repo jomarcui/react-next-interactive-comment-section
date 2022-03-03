@@ -4,7 +4,7 @@ import { Colors } from "../../enums/colors";
 
 export const Score = styled.div`
   background-color: ${Colors.LIGHT_GRAY};
-  border-radius: 0.25rem;
+  border-radius: 0.75rem;
   display: flex;
   flex-direction: column;
 
@@ -12,23 +12,24 @@ export const Score = styled.div`
     align-items: center;
     display: flex;
     justify-content: center;
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
+`;
 
-  .button {
-    color: hsl(239, 57%, 85%);
-    cursor: pointer;
-    font: 500 1rem "Rubik";
-    transition: color 0.15s, font-size 0.15s;
+export const Button = styled.button`
+  background-color: ${Colors.LIGHT_GRAY};
+  border: none;
+  color: hsl(239, 57%, 85%);
+  cursor: pointer;
+  font: 500 1rem "Rubik";
+  transition: color 0.15s, font-size 0.15s;
 
-    &:hover {
-      color: hsl(238, 40%, 52%);
-      font: 500 1.25rem "Rubik";
-    }
+  &:hover {
+    color: ${Colors.MODERATE_BLUE};
   }
+`;
 
-  .value {
-    color: hsl(238, 40%, 52%);
-    font: 500 1rem "Rubik";
-  }
+export const Value = styled.div`
+  color: ${Colors.MODERATE_BLUE};
+  font: 500 1rem "Rubik";
 `;
