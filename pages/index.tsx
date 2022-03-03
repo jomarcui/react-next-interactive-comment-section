@@ -3,10 +3,9 @@ import Head from "next/head";
 
 import styles from "../styles/Home.module.css";
 
-import * as Styles from "./index.styles";
+import Main from "./index.styles";
 
 import ContainersComment from "../containers/Comment";
-
 import ContextCommentProvider from "../context/comment";
 
 const Home: NextPage = () => (
@@ -17,11 +16,11 @@ const Home: NextPage = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <Styles.Main>
+    <Main>
       <ContextCommentProvider>
         <ContainersComment />
       </ContextCommentProvider>
-    </Styles.Main>
+    </Main>
 
     <footer className={styles.attribution}>
       Challenge by{" "}
