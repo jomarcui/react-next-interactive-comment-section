@@ -10,7 +10,7 @@ import Image from "next/image";
 import * as Styles from "./comment.styles";
 import * as Types from "../../types/comment";
 
-type ComponentsCommentReplyFormProps = {
+type ReplyFormProps = {
   commentId: string;
   currentUser: Types.User;
   replyingTo: string | null;
@@ -18,13 +18,13 @@ type ComponentsCommentReplyFormProps = {
   submitReply: (commentId: string, replyData: Types.Reply) => void;
 };
 
-const ComponentsCommentReplyForm = ({
+const ReplyForm = ({
   commentId,
   currentUser,
   replyingTo,
   setReplying,
   submitReply,
-}: ComponentsCommentReplyFormProps) => {
+}: ReplyFormProps) => {
   const {
     image: { webp },
   } = currentUser;
@@ -63,25 +63,23 @@ const ComponentsCommentReplyForm = ({
 
   return (
     <Styles.ReplyForm onSubmit={handleSubmit}>
-      <Styles.FlexBoxRow>
-        <div className="avatar-container">
-          <Image alt="" height="32" src={webp} width="32" />
-        </div>
-        <div className="text-area-container">
-          <textarea
-            name="reply"
-            onChange={handleChangeReplyText}
-            ref={replyTextInputRef}
-            title="Your reply."
-            value={replyText}
-          />
-        </div>
-        <div className="button-container">
-          <button>REPLY</button>
-        </div>
-      </Styles.FlexBoxRow>
+      <div className="avatar-container">
+        <Image alt="" height="32" src={webp} width="32" />
+      </div>
+      <div className="text-area-container">
+        <Styles.Textarea
+          name="reply"
+          onChange={handleChangeReplyText}
+          ref={replyTextInputRef}
+          title="Your reply."
+          value={replyText}
+        />
+      </div>
+      <div className="button-container">
+        <Styles.FormButton>REPLY</Styles.FormButton>
+      </div>
     </Styles.ReplyForm>
   );
 };
 
-export default ComponentsCommentReplyForm;
+export default ReplyForm;

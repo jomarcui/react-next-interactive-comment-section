@@ -8,7 +8,6 @@ const commentContainer = css`
   background-color: ${Colors.WHITE};
   border-radius: 0.5rem;
   display: flex;
-  margin-bottom: 1rem;
   padding: 0 1rem;
   width: 100%;
 `;
@@ -41,12 +40,12 @@ interface IFormButton {
 }
 
 interface IModalButton {
-  backgroundColor: string
+  backgroundColor: string;
 }
 
 //#endregion
 
-export const FormButton = styled.button<IFormButton>`
+export const FormButton = styled.button`
   background-color: ${Colors.MODERATE_BLUE};
   border: none;
   border-radius: 0.5rem;
@@ -63,7 +62,7 @@ export const FormButton = styled.button<IFormButton>`
 `;
 
 export const ModalButton = styled.button<IModalButton>`
-  background-color: ${({backgroundColor}) => backgroundColor};
+  background-color: ${({ backgroundColor }) => backgroundColor};
   border: none;
   border-radius: 0.5rem;
   color: ${Colors.WHITE};
@@ -75,6 +74,7 @@ export const ModalButton = styled.button<IModalButton>`
 export const Comment = styled.div`
   ${commentContainer}
   font: 500 1rem "Rubik";
+  margin-top: 1rem;
 `;
 
 export const Content = styled.div`
@@ -94,39 +94,97 @@ export const FlexBoxRow = styled.div`
   width: 100%;
 `;
 
-export const Li = styled.li`
-  ${flexBoxCol}
+export const NewComment = styled.div`
+  ${commentContainer}
+  margin-top: 1rem;
 
-  .score {
-    background-color: ${Colors.LIGHT_GRAY};
-    border-radius: 0.25rem;
+  form {
     display: flex;
-    flex-direction: column;
+    width: 100%;
 
     > div {
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      padding: 0.75rem;
+      margin: 1rem 0;
     }
 
-    .button {
-      color: hsl(239, 57%, 85%);
-      cursor: pointer;
-      font: 500 1rem "Rubik";
-      transition: color 0.15s, font-size 0.15s;
-
-      &:hover {
-        color: hsl(238, 40%, 52%);
-        font: 500 1.25rem "Rubik";
-      }
+    .user-avatar-container {
     }
 
-    .value {
-      color: hsl(238, 40%, 52%);
-      font: 500 1rem "Rubik";
+    .comment-text-container {
+      flex-grow: 1;
+    }
+
+    .button-container {
     }
   }
+`;
+
+export const ReplyForm = styled.form`
+  background-color: ${Colors.WHITE};
+  border-radius: 0.5rem;
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 1.375rem;
+
+  .avatar-container,
+  .button-container {
+    transition: 1s;
+  }
+
+  .text-area-container {
+    padding: 0 1.375rem;
+    flex-grow: 1;
+  }
+
+  @media (max-width: 576px) {
+    .avatar-container {
+      flex-grow: 1;
+      margin: 1.375rem 0;
+      order: 2;
+    }
+
+    .button-container {
+      margin: 1.375rem 0;
+      order: 2;
+    }
+
+    .text-area-container {
+      flex: 1 100%;
+      order: 1;
+      padding: 0;
+    }
+  }
+`;
+
+export const ReplyUlContainer = styled.ul`
+  border-left: 0.1875rem solid ${Colors.LIGHT_GRAY};
+  margin-left: 2rem;
+  padding-left: 2rem;
+  width: 100%;
+`;
+
+export const Textarea = styled.textarea`
+  border: 0.125rem solid ${Colors.MODERATE_BLUE};
+  border-radius: 1rem;
+  display: flex;
+  color: ${Colors.DARK_BLUE};
+  font: 400 1rem "Rubik";
+  line-height: 1.5rem;
+  height: 9rem;
+  padding: 0.75rem 1.625rem;
+  resize: none;
+  width: 100%;
+`;
+
+export const CommentUlContainer = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`;
+
+export const CommentUlContainerLi = styled.li`
+  ${flexBoxCol}
 
   .details {
     flex-grow: 1;
@@ -185,7 +243,7 @@ export const Li = styled.li`
           }
 
           &:disabled {
-            opacity: 0.5;;
+            opacity: 0.5;
           }
 
           &:hover:enabled {
@@ -202,88 +260,4 @@ export const Li = styled.li`
       }
     }
   }
-`;
-
-export const NewComment = styled.div`
-  ${commentContainer}
-
-  form {
-    display: flex;
-    width: 100%;
-
-    .user-avatar-container {
-      margin: 1rem 0;
-    }
-
-    .comment-text-container {
-      flex-grow: 1;
-      /* padding: 0 1rem; */
-    }
-
-    .button-container {
-      margin: 1rem 0;
-    }
-  }
-`;
-
-export const ReplyForm = styled.form`
-  ${commentContainer}
-
-  .avatar-container,
-  .text-area-container,
-  .button-container {
-    margin: 1rem;
-  }
-
-  .button-container {
-    button {
-      background-color: #5457b6;
-      border: none;
-      border-radius: 0.5rem;
-      color: ${Colors.WHITE};
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 0.75rem 1.5rem;
-      transition: opacity 0.15s;
-
-      &:hover {
-        opacity: 0.5;
-      }
-    }
-  }
-
-  .text-area-container {
-    flex-grow: 1;
-
-    textarea {
-      width: 100%;
-    }
-  }
-`;
-
-export const ReplyUlContainer = styled.ul`
-  border-left: 0.1875rem solid ${Colors.LIGHT_GRAY};
-  margin-left: 2rem;
-  padding-left: 2rem;
-  width: 100%;
-`;
-
-export const Textarea = styled.textarea`
-  border: 0.125rem solid ${Colors.MODERATE_BLUE};
-  border-radius: 1rem;
-  display: flex;
-  color: ${Colors.DARK_BLUE};
-  font: 400 1rem "Rubik";
-  line-height: 1.5rem;
-  height: 9rem;
-  margin: 1rem;
-  padding: 1rem;
-  resize: none;
-  width: calc(100% - 2rem);
-`;
-
-export const Ul = styled.ul`
-  list-style: none;
-  padding: 0;
 `;

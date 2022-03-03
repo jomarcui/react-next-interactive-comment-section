@@ -129,7 +129,7 @@ const MyComment = ({
                 title="Your comment"
                 value={myComment}
               />
-              <Styles.FormButton align="end">UPDATE</Styles.FormButton>
+              <Styles.FormButton>UPDATE</Styles.FormButton>
             </form>
           </Styles.Content>
         )}

@@ -53,7 +53,7 @@ const New = ({ currentUser, submitComment }: NewProps) => {
           />
         </div>
         <div className="button-container">
-          <Styles.FormButton align="end">Send</Styles.FormButton>
+          <Styles.FormButton>Send</Styles.FormButton>
         </div>
       </form>
     </Styles.NewComment>

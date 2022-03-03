@@ -8,7 +8,7 @@ import ComponentsCommentMine from "./MyComment";
 import ComponentsCommentMyReply from "./MyReply";
 import ComponentsCommentReply from "./Reply";
 
-type ComponentsCommentListProps = {
+type ListProps = {
   props: {
     comments: Types.Comment[];
     currentUser: Types.User;
@@ -28,7 +28,7 @@ type ComponentsCommentListProps = {
   };
 };
 
-const ComponentsCommentList = ({
+const List = ({
   props: {
     comments,
     currentUser,
@@ -39,7 +39,7 @@ const ComponentsCommentList = ({
     submitEditedReply,
     submitReply,
   },
-}: ComponentsCommentListProps) => {
+}: ListProps) => {
   const renderComment = (
     comment: Types.Comment,
     currentUser: Types.User,
@@ -103,26 +103,26 @@ const ComponentsCommentList = ({
   };
 
   return (
-    <Styles.Ul>
+    <Styles.CommentUlContainer>
       {comments.map((comment) => {
         const { id: parentCommentId, replies } = comment;
 
         return (
-          <Styles.Li key={parentCommentId}>
+          <Styles.CommentUlContainerLi key={parentCommentId}>
             {renderComment(comment, currentUser, parentCommentId)}
 
             <Styles.ReplyUlContainer>
               {replies.map((reply) => (
-                <Styles.Li key={reply.id}>
+                <Styles.CommentUlContainerLi key={reply.id}>
                   {renderReply(currentUser, parentCommentId, reply)}
-                </Styles.Li>
+                </Styles.CommentUlContainerLi>
               ))}
             </Styles.ReplyUlContainer>
-          </Styles.Li>
+          </Styles.CommentUlContainerLi>
         );
       })}
-    </Styles.Ul>
+    </Styles.CommentUlContainer>
   );
 };
 
-export default ComponentsCommentList;
+export default List;
