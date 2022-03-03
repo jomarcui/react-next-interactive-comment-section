@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import * as Styles from "./_comment.styles";
+import * as Styles from "./Comment.styles";
 
 import { Colors } from "../../enums/colors";
 

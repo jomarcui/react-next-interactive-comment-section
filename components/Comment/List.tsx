@@ -1,6 +1,6 @@
 import React from "react";
 
-import * as Styles from "./_comment.styles";
+import * as Styles from "./Comment.styles";
 import * as Types from "../../types/comment";
 
 import ComponentsComment from "./Comment";
