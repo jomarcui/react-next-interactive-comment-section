@@ -197,29 +197,28 @@ export const ModalText = styled.p`
   line-height: 1.375rem;
 `;
 
-// export const NewComment = styled.div`
-//   ${commentContainer}
-//   margin-top: 1rem;
+export const NewComment = styled.div`
+  margin-top: 1rem;
 
-//   form {
-//     display: flex;
-//     width: 100%;
+  form {
+    display: flex;
+    width: 100%;
 
-//     > div {
-//       margin: 1rem 0;
-//     }
+    > div {
+      margin: 1rem 0;
+    }
 
-//     .user-avatar-container {
-//     }
+    .user-avatar-container {
+    }
 
-//     .comment-text-container {
-//       flex-grow: 1;
-//     }
+    .comment-text-container {
+      flex-grow: 1;
+    }
 
-//     .button-container {
-//     }
-//   }
-// `;
+    .button-container {
+    }
+  }
+`;
 
 export const ReplyForm = styled.form`
   background-color: ${Colors.WHITE};
