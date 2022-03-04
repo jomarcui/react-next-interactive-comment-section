@@ -50,6 +50,12 @@ const ContextCommentProvider = ({ children }: ContextCommentProviderProps) => {
     });
   }, []);
 
+  useEffect(() => {
+    localStorageService(LOCAL_STORAGE_KEY).setData(
+      JSON.stringify(commentContext)
+    );
+  }, [commentContext]);
+
   return (
     <CommentContext.Provider value={[commentContext, setCommentContext]}>
       {children}

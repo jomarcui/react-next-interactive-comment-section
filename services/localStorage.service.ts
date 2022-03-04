@@ -13,7 +13,11 @@ const localStorageService = (localStorageKey: string) => {
     return data;
   };
 
-  return { getData };
+  const setData = (data: string) => {
+    localStorage.setItem(localStorageKey, data);
+  };
+
+  return { getData, setData };
 };
 
 export default localStorageService;
