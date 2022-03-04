@@ -6,6 +6,7 @@ import * as Types from "../../types/comment";
 
 import ComponentsScore from "../Score/Score";
 import ComponentsCommentReplyForm from "./ReplyForm";
+import Avatar from "../Avatar";
 
 type ReplyProps = {
   props: {
@@ -64,9 +65,7 @@ const Reply = ({
         </div>
         <div className="details">
           <div className="header">
-            <Styles.Avatar>
-              <Image alt="" height="32" src={webp} width="32" />
-            </Styles.Avatar>
+            <Avatar alt="" src={webp} />
             <Styles.Username>{username}</Styles.Username>
             <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
           </div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import * as Styles from "./Comment.styles";
 import * as Types from "../../types/comment";
 
+import Avatar from "../Avatar";
 import ComponentsScore from "../Score";
 import ComponentsCommentReplyForm from "./ReplyForm";
 
@@ -69,9 +70,7 @@ const Comment = ({
         </div>
         <div className="details">
           <div className="header">
-            <Styles.Avatar>
-              <Image alt="" height="32" src={webp} width="32" />
-            </Styles.Avatar>
+            <Avatar alt="" src={webp} />
             <Styles.Username>{username}</Styles.Username>
             <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
           </div>

@@ -6,6 +6,7 @@ import * as Types from "../../types/comment";
 
 import ComponentsCommentDelete from "./Delete";
 import ComponentsScore from "../Score";
+import Avatar from "../Avatar";
 
 type MyCommentProps = {
   props: {
@@ -78,29 +79,32 @@ const MyComment = ({
         <ComponentsScore {...componentsScoreProps} />
       </div>
       <div className="details">
-        <Styles.Avatar>
-          <Image alt="" height="32" src={webp} width="32" />
-        </Styles.Avatar>
-        <Styles.Username>
-          {username}
-          <Styles.You>you</Styles.You>
-        </Styles.Username>
-        <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
+        <div className="header">
+          <Avatar alt="" src={webp} />
+          <Styles.Username>
+            {username}
+            <Styles.You>you</Styles.You>
+          </Styles.Username>
+          <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
+        </div>
+        <div className="content">
+          {editing && (
+            <Styles.Content>
+              <form onSubmit={handleSubmitUpdateComment}>
+                <Styles.Textarea
+                  onChange={handleChangeComment}
+                  title="Your comment"
+                  value={myComment}
+                />
+                <div className="button-container">
+                  <Styles.FormButton>UPDATE</Styles.FormButton>
+                </div>
+              </form>
+            </Styles.Content>
+          )}
 
-        {editing && (
-          <Styles.Content>
-            <form onSubmit={handleSubmitUpdateComment}>
-              <Styles.Textarea
-                onChange={handleChangeComment}
-                title="Your comment"
-                value={myComment}
-              />
-              <Styles.FormButton>UPDATE</Styles.FormButton>
-            </form>
-          </Styles.Content>
-        )}
-
-        {!editing && <Styles.Content>{content}</Styles.Content>}
+          {!editing && <Styles.Content>{content}</Styles.Content>}
+        </div>
       </div>
       <div className="controls">
         <Styles.ControlButton

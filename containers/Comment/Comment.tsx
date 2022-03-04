@@ -4,8 +4,9 @@ import * as Types from "../../types/comment";
 
 import { CommentContext } from "../../context/comment";
 import ComponentsCommentList from "../../components/Comment/List";
+import ComponentsCommentNew from "../../components/Comment/New";
 
-const ContainersComment = () => {
+const Comment = () => {
   const [commentContext, setCommentContext] = useContext(CommentContext);
 
   const { comments, currentUser, error, loading } = commentContext;
@@ -71,6 +72,12 @@ const ContainersComment = () => {
         }
       });
     });
+
+    setComments(updatedComments);
+  };
+
+  const submitComment = (newComment: Types.Comment) => {
+    const updatedComments = [...comments, newComment];
 
     setComments(updatedComments);
   };
@@ -150,7 +157,15 @@ const ContainersComment = () => {
     submitReply,
   };
 
-  return <ComponentsCommentList props={componentsCommentListProps} />;
+  return (
+    <>
+      <ComponentsCommentList props={componentsCommentListProps} />
+      <ComponentsCommentNew
+        currentUser={currentUser}
+        submitComment={submitComment}
+      />
+    </>
+  );
 };
 
-export default ContainersComment;
+export default Comment;

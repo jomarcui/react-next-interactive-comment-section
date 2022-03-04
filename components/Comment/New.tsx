@@ -41,22 +41,21 @@ const New = ({ currentUser, submitComment }: NewProps) => {
   };
 
   return (
-    <Styles.NewComment>
-      <form onSubmit={handleSubmitCommentForm}>
-        <div className="user-avatar-container">
-          <Image alt={username} height={32} src={webp} width={32} />
-        </div>
-        <div className="comment-text-container">
-          <Styles.Textarea
-            onChange={handleChangeCommentText}
-            value={commentText}
-          />
-        </div>
-        <div className="button-container">
-          <Styles.FormButton>Send</Styles.FormButton>
-        </div>
-      </form>
-    </Styles.NewComment>
+    <Styles.NewCommentForm onSubmit={handleSubmitCommentForm}>
+      <div className="avatar-container">
+        <Image alt={username} height={32} src={webp} width={32} />
+      </div>
+      <div className="text-area-container">
+        <Styles.Textarea
+          onChange={handleChangeCommentText}
+          placeholder="Add a comment..."
+          value={commentText}
+        />
+      </div>
+      <div className="button-container">
+        <Styles.FormButton>Send</Styles.FormButton>
+      </div>
+    </Styles.NewCommentForm>
   );
 };
 

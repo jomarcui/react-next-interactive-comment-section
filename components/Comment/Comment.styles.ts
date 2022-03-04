@@ -134,10 +134,6 @@ export const Textarea = styled.textarea`
   width: 100%;
 `;
 
-export const Avatar = styled.div`
-  display: flex;
-`;
-
 export const Content = styled.div`
   color: ${Colors.GRAYISH_BLUE};
 
@@ -197,25 +193,41 @@ export const ModalText = styled.p`
   line-height: 1.375rem;
 `;
 
-export const NewComment = styled.div`
+export const NewCommentForm = styled.form`
+  background-color: ${Colors.WHITE};
+  border-radius: 0.5rem;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
   margin-top: 1rem;
+  padding: 1.375rem;
 
-  form {
-    display: flex;
-    width: 100%;
+  .user-avatar-container {
+  }
 
-    > div {
-      margin: 1rem 0;
-    }
+  .text-area-container {
+    flex-grow: 1;
+  }
 
-    .user-avatar-container {
-    }
+  .button-container {
+  }
 
-    .comment-text-container {
+  @media (max-width: ${Media.X_SMALL}) {
+    .avatar-container {
       flex-grow: 1;
+      margin: 1.375rem 0;
+      order: 2;
     }
 
     .button-container {
+      margin: 1.375rem 0;
+      order: 2;
+    }
+
+    .text-area-container {
+      flex: 1 100%;
+      order: 1;
+      padding: 0;
     }
   }
 `;
@@ -256,7 +268,6 @@ export const ReplyForm = styled.form`
 
 export const CommentUl = styled.ul`
   list-style: none;
-  margin: 1rem;
   padding: 0;
 `;
 
