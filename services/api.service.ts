@@ -2,7 +2,7 @@ import * as Types from "../types/comment";
 
 const apiService = {
   postReply(
-    commentId: string,
+    commentId: number,
     comments: Types.Comment[],
     replyText: string,
     replyingTo: string,
@@ -10,8 +10,8 @@ const apiService = {
   ) {
     const reply: Types.Comment = {
       content: replyText,
-      createdAt: new Date(Date.now()).toLocaleDateString(),
-      id: new Date().getTime().toString(),
+      createdAt: new Date(Date.now()),
+      id: new Date().getTime(),
       //replyingTo: replyingTo,
       score: 0,
       user: currentUser,
