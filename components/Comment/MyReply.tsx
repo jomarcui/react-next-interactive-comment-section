@@ -4,31 +4,23 @@ import Image from "next/image";
 import * as Styles from "./Comment.styles";
 import * as Types from "../../types/comment";
 
+import { displayHowOld } from "../../helpers/comment";
+
+import Avatar from "../Avatar";
+import ComponentsCommentContent from "./Content";
 import ComponentsCommentDelete from "./Delete";
 import ComponentsScore from "../Score";
-import Avatar from "../Avatar";
 
 type MyReplyProps = {
   props: {
     reply: Types.Reply;
-    parentCommentId: string;
-    deleteReply: (replyId: string) => void;
-    submitEditedComment: (
-      commentId: string,
-      commentData: Types.Comment
-    ) => void;
+    deleteReply: (replyId: number) => void;
     submitEditedReply: (replyData: Types.Reply) => void;
   };
 };
 
-const MyComment = ({
-  props: {
-    reply,
-    parentCommentId,
-    deleteReply,
-    submitEditedComment,
-    submitEditedReply,
-  },
+const MyReply = ({
+  props: { reply, deleteReply, submitEditedReply },
 }: MyReplyProps) => {
   const {
     content,
@@ -42,7 +34,7 @@ const MyComment = ({
     },
   } = reply;
 
-  const [replyIdToDelete, setReplyIdToDelete] = useState<string>();
+  const [replyIdToDelete, setReplyIdToDelete] = useState<number>();
   const [deleting, setDeleting] = useState(false);
   const [editing, setEditing] = useState(false);
   const [myComment, setMyComment] = useState(content);
@@ -80,38 +72,6 @@ const MyComment = ({
     setEditing(false);
   };
 
-  const parseContent = (content: string) => {
-    const words = content.split(" ");
-    const replyingTo = content.match(/@\S+/g) || [];
-
-    let usernamePassedBy = false;
-
-    const newContent = words.map((word) => {
-      if (replyingTo.includes(word)) {
-        if (usernamePassedBy) {
-          return (
-            <>
-              {" "}
-              <Styles.ReplyingTo>{word}</Styles.ReplyingTo>
-            </>
-          );
-        }
-
-        usernamePassedBy = true;
-        return <Styles.ReplyingTo>{word}</Styles.ReplyingTo>;
-      }
-
-      if (usernamePassedBy) {
-        return ` ${word}`;
-      }
-
-      usernamePassedBy = true;
-      return `${word}`;
-    });
-
-    return newContent;
-  };
-
   return (
     <Styles.Comment>
       <div className="score">
@@ -124,7 +84,7 @@ const MyComment = ({
             {username}
             <Styles.You>you</Styles.You>
           </Styles.Username>
-          <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
+          <Styles.CreatedAt>{displayHowOld(createdAt)}</Styles.CreatedAt>
         </div>
         <div className="content">
           {editing && (
@@ -142,7 +102,7 @@ const MyComment = ({
             </Styles.Content>
           )}
 
-          {!editing && <Styles.Content>{parseContent(content)}</Styles.Content>}
+          {!editing && <ComponentsCommentContent content={content} />}
         </div>
       </div>
       <div className="controls">
@@ -179,4 +139,4 @@ const MyComment = ({
   );
 };
 
-export default MyComment;
+export default MyReply;

@@ -1,27 +1,27 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 
 import * as Styles from "./Comment.styles";
 import * as Types from "../../types/comment";
 
+import { displayHowOld } from "../../helpers/comment";
+
+import Avatar from "../Avatar";
+import ComponentsCommentContent from "./Content";
 import ComponentsCommentDelete from "./Delete";
 import ComponentsScore from "../Score";
-import Avatar from "../Avatar";
 
 type MyCommentProps = {
   props: {
     comment: Types.Comment;
-    parentCommentId: string;
-    deleteReply: (replyId: string) => void;
-    submitEditedComment: (
-      commentId: string,
-      commentData: Types.Comment
-    ) => void;
+    parentCommentId: number;
+    deleteComment: (replyId: number) => void;
+    submitEditedComment: (commentData: Types.Comment) => void;
   };
 };
 
 const MyComment = ({
-  props: { comment, parentCommentId, deleteReply, submitEditedComment },
+  props: { comment, parentCommentId, deleteComment, submitEditedComment },
 }: MyCommentProps) => {
   const {
     content,
@@ -34,7 +34,7 @@ const MyComment = ({
     },
   } = comment;
 
-  const [commentIdToDelete, setCommentIdToDelete] = useState<string>();
+  const [commentIdToDelete, setCommentIdToDelete] = useState<number>();
   const [deleting, setDeleting] = useState(false);
   const [editing, setEditing] = useState(false);
   const [myComment, setMyComment] = useState(content);
@@ -47,7 +47,8 @@ const MyComment = ({
   };
 
   const confirmDelete = () => {
-    deleteReply(parentCommentId);
+    console.log("parentCommentId", parentCommentId);
+    deleteComment(parentCommentId);
     setDeleting(false);
   };
 
@@ -60,49 +61,16 @@ const MyComment = ({
 
   const handleClickEdit = () => setEditing(true);
 
-  const handleSubmitUpdateComment = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitUpdateComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const commentData = {
       ...comment,
       content: myComment,
-      id: parentCommentId,
     };
 
-    submitEditedComment(parentCommentId, commentData);
+    submitEditedComment(commentData);
     setEditing(false);
-  };
-
-  const parseContent = (content: string) => {
-    const words = content.split(" ");
-    const replyingTo = content.match(/@\S+/g) || [];
-
-    let usernamePassedBy = false;
-
-    const newContent = words.map((word) => {
-      if (replyingTo.includes(word)) {
-        if (usernamePassedBy) {
-          return (
-            <>
-              {" "}
-              <Styles.ReplyingTo>{word}</Styles.ReplyingTo>
-            </>
-          );
-        }
-
-        usernamePassedBy = true;
-        return <Styles.ReplyingTo>{word}</Styles.ReplyingTo>;
-      }
-
-      if (usernamePassedBy) {
-        return ` ${word}`;
-      }
-
-      usernamePassedBy = true;
-      return `${word}`;
-    });
-
-    return newContent;
   };
 
   return (
@@ -117,7 +85,7 @@ const MyComment = ({
             {username}
             <Styles.You>you</Styles.You>
           </Styles.Username>
-          <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
+          <Styles.CreatedAt>{displayHowOld(createdAt)}</Styles.CreatedAt>
         </div>
         <div className="content">
           {editing && (
@@ -135,7 +103,7 @@ const MyComment = ({
             </Styles.Content>
           )}
 
-          {!editing && <Styles.Content>{parseContent(content)}</Styles.Content>}
+          {!editing && <ComponentsCommentContent content={content} />}
         </div>
       </div>
       <div className="controls">

@@ -11,11 +11,11 @@ import * as Styles from "./Comment.styles";
 import * as Types from "../../types/comment";
 
 type ReplyFormProps = {
-  commentId: string;
+  commentId: number;
   currentUser: Types.User;
   replyingTo: string | null;
   setReplying: Dispatch<SetStateAction<boolean>>;
-  submitReply: (commentId: string, replyData: Types.Reply) => void;
+  submitReply: (commentId: number, replyData: Types.Reply) => void;
 };
 
 const ReplyForm = ({
@@ -45,8 +45,8 @@ const ReplyForm = ({
 
     const replyData: Types.Reply = {
       content: replyText,
-      createdAt: new Date(Date.now()).toLocaleDateString(),
-      id: new Date().getTime().toString(),
+      createdAt: new Date(Date.now()),
+      id: new Date().getTime(),
       replyingTo: replyingTo ?? "",
       score: 0,
       user: currentUser,

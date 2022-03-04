@@ -37,4 +37,5 @@ export const Button = styled.button`
 export const Value = styled.div`
   color: ${Colors.MODERATE_BLUE};
   font: 500 1rem "Rubik";
+  padding: 0 !important;
 `;

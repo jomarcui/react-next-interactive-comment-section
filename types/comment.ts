@@ -1,7 +1,7 @@
 export type Comment = {
   content: string;
-  createdAt: string;
-  id: string;
+  createdAt: Date;
+  id: number;
   replies: Reply[];
   score: number;
   user: User;
@@ -9,12 +9,12 @@ export type Comment = {
 
 export type Reply = {
   content: string;
-  createdAt: string;
-  id: string;
-  replyingTo: string,
+  createdAt: Date;
+  id: number;
+  replyingTo: string;
   score: number;
   user: User;
-}
+};
 
 export type User = {
   image: {

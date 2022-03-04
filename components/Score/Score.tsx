@@ -3,11 +3,11 @@ import * as Styles from "./Score.styles";
 const SCORE_OPERAND = 1;
 
 type ScoreProps = {
-  commentId: string;
+  commentId: number;
   replyingTo: string;
   score: number;
   setCommentScore: (
-    commentId: string,
+    commentId: number,
     newScore: number,
     replyingTo: string
   ) => void;
@@ -28,7 +28,7 @@ const Score = ({
   const increaseScore = (increment: boolean) =>
     increment ? (score += SCORE_OPERAND) : (score -= SCORE_OPERAND);
 
-  const setScore = (commentId: string, newScore: number, replyingTo: string) =>
+  const setScore = (commentId: number, newScore: number, replyingTo: string) =>
     setCommentScore(commentId, newScore, replyingTo);
 
   return (

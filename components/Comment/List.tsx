@@ -12,19 +12,17 @@ type ListProps = {
   props: {
     comments: Types.Comment[];
     currentUser: Types.User;
-    deleteReply: (replyId: string) => void;
+    deleteComment: (commentId: number) => void;
+    deleteReply: (replyId: number) => void;
     setCommentScore: (
-      commentId: string,
+      commentId: number,
       newScore: number,
       replyingTo: string
     ) => void;
-    setReplyScore: (replyId: string, newScore: number) => void;
-    submitEditedComment: (
-      commentId: string,
-      commentData: Types.Comment
-    ) => void;
+    setReplyScore: (replyId: number, newScore: number) => void;
+    submitEditedComment: (commentData: Types.Comment) => void;
     submitEditedReply: (replyData: Types.Reply) => void;
-    submitReply: (commentId: string, replyData: Types.Reply) => void;
+    submitReply: (commentId: number, replyData: Types.Reply) => void;
   };
 };
 
@@ -32,6 +30,7 @@ const List = ({
   props: {
     comments,
     currentUser,
+    deleteComment,
     deleteReply,
     setCommentScore,
     setReplyScore,
@@ -43,7 +42,7 @@ const List = ({
   const renderComment = (
     comment: Types.Comment,
     currentUser: Types.User,
-    parentCommentId: string
+    parentCommentId: number
   ) => {
     const isMyComment = comment.user.username === currentUser.username;
 
@@ -51,7 +50,7 @@ const List = ({
       const myCommentProps = {
         comment,
         parentCommentId,
-        deleteReply,
+        deleteComment,
         setReplyScore,
         submitEditedComment,
         submitEditedReply,
@@ -73,7 +72,7 @@ const List = ({
 
   const renderReply = (
     currentUser: Types.User,
-    parentCommentId: string,
+    parentCommentId: number,
     reply: Types.Reply
   ) => {
     const isMyReply = reply.user.username === currentUser.username;

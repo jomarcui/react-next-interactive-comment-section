@@ -28,8 +28,8 @@ const New = ({ currentUser, submitComment }: NewProps) => {
 
     const newCommentData: Types.Comment = {
       content: commentText,
-      createdAt: new Date(Date.now()).toLocaleDateString(),
-      id: new Date().getTime().toString(),
+      createdAt: new Date(Date.now()),
+      id: new Date().getTime(),
       replies: [],
       score: 0,
       user: currentUser,
@@ -43,7 +43,7 @@ const New = ({ currentUser, submitComment }: NewProps) => {
   return (
     <Styles.NewCommentForm onSubmit={handleSubmitCommentForm}>
       <div className="avatar-container">
-        <Image alt={username} height={32} src={webp} width={32} />
+        {webp && <Image alt={username} height={32} src={webp} width={32} />}
       </div>
       <div className="text-area-container">
         <Styles.Textarea

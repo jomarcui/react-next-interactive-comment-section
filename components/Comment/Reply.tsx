@@ -4,21 +4,24 @@ import Image from "next/image";
 import * as Styles from "./Comment.styles";
 import * as Types from "../../types/comment";
 
-import ComponentsScore from "../Score/Score";
-import ComponentsCommentReplyForm from "./ReplyForm";
+import { displayHowOld } from "../../helpers/comment";
+
 import Avatar from "../Avatar";
+import ComponentsCommentContent from "./Content";
+import ComponentsCommentReplyForm from "./ReplyForm";
+import ComponentsScore from "../Score/Score";
 
 type ReplyProps = {
   props: {
     reply: Types.Reply;
     currentUser: Types.User;
-    parentCommentId: string;
+    parentCommentId: number;
     setCommentScore: (
-      commentId: string,
+      commentId: number,
       newScore: number,
       replyingTo: string
     ) => void;
-    submitReply: (commentId: string, replyData: Types.Reply) => void;
+    submitReply: (commentId: number, replyData: Types.Reply) => void;
   };
 };
 
@@ -57,38 +60,6 @@ const Reply = ({
     setReplying(true);
   };
 
-  const parseContent = (content: string) => {
-    const words = content.split(" ");
-    const replyingTo = content.match(/@\S+/g) || [];
-
-    let usernamePassedBy = false;
-
-    const newContent = words.map((word) => {
-      if (replyingTo.includes(word)) {
-        if (usernamePassedBy) {
-          return (
-            <>
-              {" "}
-              <Styles.ReplyingTo>{word}</Styles.ReplyingTo>
-            </>
-          );
-        }
-
-        usernamePassedBy = true;
-        return <Styles.ReplyingTo>{word}</Styles.ReplyingTo>;
-      }
-
-      if (usernamePassedBy) {
-        return ` ${word}`;
-      }
-
-      usernamePassedBy = true;
-      return `${word}`;
-    });
-
-    return newContent;
-  };
-
   return (
     <>
       <Styles.Comment>
@@ -99,10 +70,10 @@ const Reply = ({
           <div className="header">
             <Avatar alt="" src={webp} />
             <Styles.Username>{username}</Styles.Username>
-            <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
+            <Styles.CreatedAt>{displayHowOld(createdAt)}</Styles.CreatedAt>
           </div>
           <div className="content">
-            <Styles.Content>{parseContent(content)}</Styles.Content>
+            <ComponentsCommentContent content={content} />
           </div>
         </div>
         <div className="controls">

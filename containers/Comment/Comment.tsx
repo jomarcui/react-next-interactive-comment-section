@@ -11,7 +11,15 @@ const Comment = () => {
 
   const { comments, currentUser, error, loading } = commentContext;
 
-  const deleteReply = (replyId: string) => {
+  const deleteComment = (commentId: number) => {
+    let updatedComments = [...comments];
+
+    updatedComments = updatedComments.filter(({ id }) => id !== commentId);
+
+    setComments(updatedComments);
+  };
+
+  const deleteReply = (replyId: number) => {
     let updatedComments = [...comments];
 
     updatedComments.forEach((comment) => {
@@ -31,7 +39,7 @@ const Comment = () => {
   };
 
   const setCommentScore = (
-    commentId: string,
+    commentId: number,
     newScore: number,
     replyingTo: string
   ) => {
@@ -60,7 +68,7 @@ const Comment = () => {
     setComments(updatedComments);
   };
 
-  const setReplyScore = (replyId: string, newScore: number) => {
+  const setReplyScore = (replyId: number, newScore: number) => {
     const updatedComments = [...comments];
 
     updatedComments.forEach(({ replies }) => {
@@ -82,32 +90,17 @@ const Comment = () => {
     setComments(updatedComments);
   };
 
-  const submitEditedComment = (
-    commentId: string,
-    commentData: Types.Comment
-  ) => {
-    console.log("comments", comments);
-    console.log("commentData", commentData);
+  const submitEditedComment = (commentData: Types.Comment) => {
+    const updatedComments = comments.map((comment) => {
+      if (comment.id === commentData.id) {
+        comment.content = commentData.content;
+        return comment;
+      }
 
-    // const updatedComments = comments.map((comment) => {
-    //   if (comment.id === commentId) {
-    //     if (!isReply) {
-    //       comment = commentData;
-    //     } else {
-    //       const { replies } = comment;
+      return comment;
+    });
 
-    //       const updatedReplies = replies.map((reply) => {
-    //         if (reply.id === commentData.id) {
-    //           reply = commentData;
-    //         }
-    //       })
-    //     }
-    //   }
-
-    //   return comment;
-    // });
-
-    // setComments(updatedComments);
+    setComments(updatedComments);
   };
 
   const submitEditedReply = (replyData: Types.Reply) => {
@@ -126,7 +119,7 @@ const Comment = () => {
     setComments(updatedComments);
   };
 
-  const submitReply = (commentId: string, replyData: Types.Reply) => {
+  const submitReply = (commentId: number, replyData: Types.Reply) => {
     const updatedComments = comments.map((comment) => {
       if (comment.id === commentId) {
         comment.replies = [...comment.replies, replyData];
@@ -149,6 +142,7 @@ const Comment = () => {
   const componentsCommentListProps = {
     comments,
     currentUser,
+    deleteComment,
     deleteReply,
     setCommentScore,
     setReplyScore,

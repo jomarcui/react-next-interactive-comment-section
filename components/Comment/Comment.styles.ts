@@ -5,10 +5,6 @@ import { Media } from "../../enums/media";
 
 //#region Types
 
-interface IFormButton {
-  align: string;
-}
-
 interface IModalButton {
   backgroundColor: string;
 }
@@ -51,7 +47,6 @@ export const Comment = styled.div`
   background-color: ${Colors.WHITE};
   border-radius: 0.5rem;
   display: flex;
-  font: 500 1rem "Rubik";
   gap: 1.375rem;
   padding: 1.375rem;
   position: relative;
@@ -66,6 +61,7 @@ export const Comment = styled.div`
     .header {
       align-items: center;
       display: flex;
+      gap: 1rem;
     }
   }
 
@@ -122,7 +118,7 @@ export const ControlButton = styled.button<IControlButton>`
 `;
 
 export const Textarea = styled.textarea`
-  border: 0.125rem solid ${Colors.MODERATE_BLUE};
+  border: 0.0625rem solid ${Colors.LIGHT_GRAY};
   border-radius: 1rem;
   display: flex;
   color: ${Colors.DARK_BLUE};
@@ -132,10 +128,15 @@ export const Textarea = styled.textarea`
   padding: 0.75rem 1.625rem;
   resize: none;
   width: 100%;
+
+  &:focus-visible {
+    border-color: ${Colors.MODERATE_BLUE};
+  }
 `;
 
 export const Content = styled.div`
   color: ${Colors.GRAYISH_BLUE};
+  font-size: 1rem;
 
   .button-container {
     margin-top: 1rem;
@@ -154,7 +155,6 @@ export const Content = styled.div`
 export const CreatedAt = styled.div`
   color: ${Colors.GRAYISH_BLUE};
   font: 400 1rem "Rubik";
-  margin-left: 0.5rem;
 `;
 
 export const Username = styled.div`
@@ -163,7 +163,6 @@ export const Username = styled.div`
   display: flex;
   font: 500 1rem "Rubik";
   gap: 1rem;
-  margin: 0 0.5rem;
 `;
 
 export const You = styled.div`
@@ -172,11 +171,6 @@ export const You = styled.div`
   color: ${Colors.WHITE};
   font: 400 0.875rem "Rubik";
   padding: 0.25rem 0.5rem;
-`;
-
-export const ReplyingTo = styled.span`
-  color: ${Colors.MODERATE_BLUE};
-  font: 500 1rem "Rubik";
 `;
 
 export const ModalTitle = styled.div`
