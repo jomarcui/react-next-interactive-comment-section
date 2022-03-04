@@ -43,7 +43,7 @@ const New = ({ currentUser, submitComment }: NewProps) => {
   return (
     <Styles.NewCommentForm onSubmit={handleSubmitCommentForm}>
       <div className="avatar-container">
-        <Image alt={username} height={32} src={webp} width={32} />
+        {/* <Image alt={username} height={32} src={webp} width={32} /> */}
       </div>
       <div className="text-area-container">
         <Styles.Textarea

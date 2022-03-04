@@ -57,6 +57,38 @@ const Reply = ({
     setReplying(true);
   };
 
+  const parseContent = (content: string) => {
+    const words = content.split(" ");
+    const replyingTo = content.match(/@\S+/g) || [];
+
+    let usernamePassedBy = false;
+
+    const newContent = words.map((word) => {
+      if (replyingTo.includes(word)) {
+        if (usernamePassedBy) {
+          return (
+            <>
+              {" "}
+              <Styles.ReplyingTo>{word}</Styles.ReplyingTo>
+            </>
+          );
+        }
+
+        usernamePassedBy = true;
+        return <Styles.ReplyingTo>{word}</Styles.ReplyingTo>;
+      }
+
+      if (usernamePassedBy) {
+        return ` ${word}`;
+      }
+
+      usernamePassedBy = true;
+      return `${word}`;
+    });
+
+    return newContent;
+  };
+
   return (
     <>
       <Styles.Comment>
@@ -70,7 +102,7 @@ const Reply = ({
             <Styles.CreatedAt>{createdAt}</Styles.CreatedAt>
           </div>
           <div className="content">
-            <Styles.Content>{content}</Styles.Content>
+            <Styles.Content>{parseContent(content)}</Styles.Content>
           </div>
         </div>
         <div className="controls">

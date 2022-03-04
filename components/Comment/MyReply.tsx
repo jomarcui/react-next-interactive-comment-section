@@ -80,6 +80,38 @@ const MyComment = ({
     setEditing(false);
   };
 
+  const parseContent = (content: string) => {
+    const words = content.split(" ");
+    const replyingTo = content.match(/@\S+/g) || [];
+
+    let usernamePassedBy = false;
+
+    const newContent = words.map((word) => {
+      if (replyingTo.includes(word)) {
+        if (usernamePassedBy) {
+          return (
+            <>
+              {" "}
+              <Styles.ReplyingTo>{word}</Styles.ReplyingTo>
+            </>
+          );
+        }
+
+        usernamePassedBy = true;
+        return <Styles.ReplyingTo>{word}</Styles.ReplyingTo>;
+      }
+
+      if (usernamePassedBy) {
+        return ` ${word}`;
+      }
+
+      usernamePassedBy = true;
+      return `${word}`;
+    });
+
+    return newContent;
+  };
+
   return (
     <Styles.Comment>
       <div className="score">
@@ -110,7 +142,7 @@ const MyComment = ({
             </Styles.Content>
           )}
 
-          {!editing && <Styles.Content>{content}</Styles.Content>}
+          {!editing && <Styles.Content>{parseContent(content)}</Styles.Content>}
         </div>
       </div>
       <div className="controls">

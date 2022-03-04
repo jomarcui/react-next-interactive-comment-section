@@ -145,18 +145,10 @@ export const Content = styled.div`
     }
   }
 
-  /* form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    .button-container {
-    }
-
-    .text-area-container {
-      flex-grow: 1;
-    }
-  } */
+  .replyingTo {
+    color: ${Colors.MODERATE_BLUE};
+    font: 500 1rem "Rubik";
+  }
 `;
 
 export const CreatedAt = styled.div`
@@ -180,6 +172,11 @@ export const You = styled.div`
   color: ${Colors.WHITE};
   font: 400 0.875rem "Rubik";
   padding: 0.25rem 0.5rem;
+`;
+
+export const ReplyingTo = styled.span`
+  color: ${Colors.MODERATE_BLUE};
+  font: 500 1rem "Rubik";
 `;
 
 export const ModalTitle = styled.div`
