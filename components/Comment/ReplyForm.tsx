@@ -43,6 +43,8 @@ const ReplyForm = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!replyText) return;
+
     const replyData: Types.Reply = {
       content: replyText,
       createdAt: new Date(Date.now()),

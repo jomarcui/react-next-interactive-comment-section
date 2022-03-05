@@ -26,6 +26,8 @@ const New = ({ currentUser, submitComment }: NewProps) => {
   const handleSubmitCommentForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!commentText) return;
+
     const newCommentData: Types.Comment = {
       content: commentText,
       createdAt: new Date(Date.now()),
