@@ -263,7 +263,7 @@ export const CommentUl = styled.ul`
 `;
 
 export const ReplyUl = styled.ul`
-  border-left: 0.1875rem solid ${Colors.LIGHT_GRAY};
+  border-left: 0.0625rem solid ${Colors.LIGHT_GRAY};
   list-style: none;
   margin-left: 2.375rem;
   padding-left: 2rem;

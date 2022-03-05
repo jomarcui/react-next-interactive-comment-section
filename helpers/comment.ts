@@ -22,7 +22,7 @@ export const displayHowOld = (createdAt: Date) => {
 
   switch (true) {
     case diffInDays < 2:
-      return "a moment ago";
+      return "Today";
     case diffInDays > 1 && diffInDays < 8:
       return `${diffInDays} ${plural("day", diffInDays > 1)} ago`;
     case diffInDays > 7 && diffInDays < 31:
