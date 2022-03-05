@@ -1,16 +1,12 @@
-export const parseContent = (content: string) => {
-  const words = content.split(" ");
-  const replyingTo = content.match(/@\S+/g) || [];
+const deconstructWord = (word: string) => {
+  const pattern = /[!?.,;:]\s*$/;
+  const patternFound = pattern.test(word);
 
-  const newContent = words.map((word) => {
-    if (replyingTo.includes(word)) {
-      return `<span class="replyingTo">${word}</span>`;
-    }
+  if (patternFound) {
+    return [word.slice(0, -1), word.slice(-1)];
+  }
 
-    return `${word}`;
-  });
-
-  return newContent.join(" ");
+  return [word, ""];
 };
 
 export const displayHowOld = (createdAt: Date) => {
@@ -29,6 +25,23 @@ export const displayHowOld = (createdAt: Date) => {
     return `${minutes} ${plural("minute", minutes > 1)} ago`;
   else if (hours < 24) return `${hours} ${plural("hour", minutes > 1)} ago`;
   else return `${days} ${plural("day", minutes > 1)} ago`;
+};
+
+export const parseContent = (content: string) => {
+  const words = content.split(" ");
+  const replyingTo = content.match(/@\S+/g) || [];
+
+  const newContent = words.map((word) => {
+    if (replyingTo.includes(word)) {
+      const wordDeconstructed = deconstructWord(word);
+
+      return `<span class="replyingTo">${wordDeconstructed[0]}</span>${wordDeconstructed[1]}`;
+    }
+
+    return `${word}`;
+  });
+
+  return newContent.join(" ");
 };
 
 const plural = (str: string, isPlural: boolean) =>
